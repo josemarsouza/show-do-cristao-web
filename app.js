@@ -9,6 +9,89 @@
   const PRIZES = [2, 5, 10, 20, 50, 100];
   const STORAGE_KEY = "show_do_cristao_settings_v1";
 
+  // Sound System
+  const sounds = {
+    ctx: null,
+    
+    getContext() {
+      if (!this.ctx) {
+        try {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) {
+          console.log('Sound not supported');
+        }
+      }
+      return this.ctx;
+    },
+    
+    playTone(frequency, duration, type = 'sine') {
+      const ctx = this.getContext();
+      if (!ctx) return;
+      
+      try {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.frequency.value = frequency;
+        osc.type = type;
+        
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+        
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + duration);
+      } catch(e) {
+        console.log('Sound playback failed');
+      }
+    },
+    
+    welcome() {
+      // Joyful ascending melody
+      setTimeout(() => this.playTone(523.25, 0.15), 0);    // C5
+      setTimeout(() => this.playTone(659.25, 0.15), 150);  // E5
+      setTimeout(() => this.playTone(783.99, 0.25), 300);  // G5
+    },
+    
+    select() {
+      // Quick click sound
+      this.playTone(800, 0.08);
+    },
+    
+    correct() {
+      // Success melody
+      setTimeout(() => this.playTone(523.25, 0.12), 0);    // C5
+      setTimeout(() => this.playTone(659.25, 0.12), 120);  // E5
+      setTimeout(() => this.playTone(783.99, 0.12), 240);  // G5
+      setTimeout(() => this.playTone(1046.50, 0.25), 360); // C6
+    },
+    
+    wrong() {
+      // Descending sad tones
+      setTimeout(() => this.playTone(400, 0.15), 0);
+      setTimeout(() => this.playTone(300, 0.15), 150);
+      setTimeout(() => this.playTone(200, 0.3), 300);
+    },
+    
+    gameEnd() {
+      // Triumphant fanfare
+      setTimeout(() => this.playTone(523.25, 0.15), 0);
+      setTimeout(() => this.playTone(659.25, 0.15), 150);
+      setTimeout(() => this.playTone(783.99, 0.15), 300);
+      setTimeout(() => this.playTone(1046.50, 0.15), 450);
+      setTimeout(() => this.playTone(1318.51, 0.4), 600);
+    },
+    
+    giveUp() {
+      // Gentle descending tones
+      setTimeout(() => this.playTone(500, 0.2), 0);
+      setTimeout(() => this.playTone(400, 0.2), 200);
+      setTimeout(() => this.playTone(350, 0.3), 400);
+    }
+  };
+
   function $(sel){ return document.querySelector(sel); }
   function escapeHtml(s){
     return (s ?? "").toString()
@@ -46,6 +129,7 @@
     settings: loadSettings(),
     round: null,
     focusIndex: 0,
+    selectedIndex: null, // index selected but not yet confirmed
     toast: null,
     lock: false, // prevents double submit during animations
   };
@@ -108,6 +192,7 @@
       finished: false,
       won: 0, // last prize achieved
       lastResult: null, // { ok: boolean, correctIndex: number }
+      gaveUp: false, // whether player gave up
     };
   }
 
@@ -149,16 +234,16 @@
     },
     header(){
       const right = state.screen === "game" && state.round
-        ? `<div class="pill"><span>Valendo:</span> <strong>R$ ${PRIZES[state.round.prizeIndex]}</strong></div>`
+        ? `<div class="pill"><span>🎁 Valendo:</span> <strong>R$ ${PRIZES[state.round.prizeIndex]}</strong></div>`
         : state.screen === "result" && state.round
-        ? `<div class="pill"><span>Você conquistou:</span> <strong>R$ ${state.round.won}</strong></div>`
-        : `<div class="pill"><span>Dicas:</span> <strong>F11</strong> tela cheia</div>`;
+        ? `<div class="pill"><span>🎄 Você conquistou:</span> <strong>R$ ${state.round.won}</strong></div>`
+        : `<div class="pill"><span>Dica:</span> <strong>F11</strong> tela cheia</div>`;
 
       return `
         <div class="header">
           <div class="brand">
-            <h1>Show do Cristão</h1>
-            <div class="sub">Quiz sobre Jesus • Natal em família</div>
+            <h1>🎅 Show do Cristão 🎄</h1>
+            <div class="sub">Quiz Natalino em Família • Jesus é o motivo!</div>
           </div>
           ${right}
         </div>
@@ -167,20 +252,22 @@
     home(){
       return `
         <div class="center">
-          <h2 class="title-big">Brincadeira de Natal</h2>
+          <h2 class="title-big">🎄 Quiz Natalino em Família! 🎁</h2>
           <p class="lead">
-            Responda perguntas sobre Jesus. A cada acerto, avance na premiação:
-            <strong style="color:var(--text)">R$ 2</strong>,
-            <strong style="color:var(--text)">R$ 5</strong>,
-            <strong style="color:var(--text)">R$ 10</strong>,
-            <strong style="color:var(--text)">R$ 20</strong>,
-            <strong style="color:var(--text)">R$ 50</strong>,
-            <strong style="color:var(--text)">R$ 100</strong>.
+            Neste Natal, vamos testar nosso conhecimento sobre Jesus de forma divertida! 
+            A cada acerto, você sobe na premiação:
+            <strong style="color:var(--christmas-gold)">R$ 2</strong>,
+            <strong style="color:var(--christmas-gold)">R$ 5</strong>,
+            <strong style="color:var(--christmas-gold)">R$ 10</strong>,
+            <strong style="color:var(--christmas-gold)">R$ 20</strong>,
+            <strong style="color:var(--christmas-gold)">R$ 50</strong>,
+            <strong style="color:var(--christmas-gold)">R$ 100</strong>.
+            É só responder e se divertir! 🌟
           </p>
 
           <div class="row" style="margin-top:10px">
-            <button class="btn primary" id="btnStart">Começar</button>
-            <button class="btn" id="btnSettings">Configurações</button>
+            <button class="btn primary" id="btnStart">🎅 Começar a Brincadeira!</button>
+            <button class="btn" id="btnSettings">⚙️ Configurações</button>
           </div>
 
           <div class="card" style="padding:14px 16px; margin-top: 10px">
@@ -189,7 +276,7 @@
               <code>P</code> pular • <code>E</code> eliminar duas • <code>H</code> ajuda •
               <code>Esc</code> início
             </div>
-            <p class="smallnote">Sugestão: aperte <strong>F11</strong> para tela cheia antes de começar.</p>
+            <p class="smallnote">Sugestão: aperte <strong>F11</strong> para tela cheia e aproveite mais! 😉</p>
           </div>
         </div>
       `;
@@ -236,12 +323,31 @@
 
       const letters = ["A","B","C","D"];
 
+      // Build timeline
+      const timelineHtml = `
+        <div class="timeline">
+          ${PRIZES.map((prize, i) => {
+            const status = i < idx ? 'earned' : i === idx ? 'current' : 'pending';
+            const label = i < idx ? '✓' : i === idx ? '→' : '';
+            return `
+              <div class="timeline-item">
+                <div class="money-note ${status}">
+                  ${prize}
+                </div>
+                <div class="timeline-label">${label}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+
       const answersHtml = q.a.map((txt, i)=>{
         const isElim = r.eliminated.has(i);
         const classes = [
           "answer",
           isElim ? "hidden" : "",
           i === state.focusIndex ? "focused" : "",
+          i === state.selectedIndex ? "selected" : "",
         ].join(" ").trim();
 
         return `
@@ -252,11 +358,17 @@
         `;
       }).join("");
 
+      const canGiveUp = r.helps.skip && r.helps.eliminate && r.helps.help;
       const helpBtns = `
-        <button class="btn small ${r.helps.skip ? "" : "primary"}" id="helpSkip" ${r.helps.skip ? "disabled":""}>Pular (P)</button>
-        <button class="btn small ${r.helps.eliminate ? "" : "primary"}" id="helpElim" ${r.helps.eliminate ? "disabled":""}>Eliminar duas (E)</button>
-        <button class="btn small ${r.helps.help ? "" : "primary"}" id="helpHelp" ${r.helps.help ? "disabled":""}>Pedir ajuda (H)</button>
+        <button class="btn small ${r.helps.skip ? "" : "primary"}" id="helpSkip" ${r.helps.skip ? "disabled":""}>🔄 Pular (P)</button>
+        <button class="btn small ${r.helps.eliminate ? "" : "primary"}" id="helpElim" ${r.helps.eliminate ? "disabled":""}>❌ Eliminar (E)</button>
+        <button class="btn small ${r.helps.help ? "" : "primary"}" id="helpHelp" ${r.helps.help ? "disabled":""}>💡 Ajuda (H)</button>
+        ${canGiveUp ? `<button class="btn small danger" id="btnGiveUp">🏳️ Desistir</button>` : ''}
       `;
+
+      const confirmBtn = state.selectedIndex !== null 
+        ? `<button class="confirm-btn" id="btnConfirm">✨ Confirmar Resposta ✨</button>`
+        : `<button class="confirm-btn" id="btnConfirm" disabled>Selecione uma alternativa primeiro</button>`;
 
       return `
         <div class="row" style="justify-content:space-between">
@@ -264,19 +376,23 @@
           <div class="pill"><span>Progresso:</span> <strong>${progress}/6</strong></div>
         </div>
 
+        ${timelineHtml}
+
         <div class="card question">
           <h2>${escapeHtml(q.q)}</h2>
-          <p>Escolha a alternativa correta.</p>
+          <p>Escolha a alternativa correta e depois confirme sua resposta! 🤔</p>
         </div>
 
         <div class="answers">
           ${answersHtml}
         </div>
 
+        ${confirmBtn}
+
         <div class="footer">
           <div class="helpbar">${helpBtns}</div>
           <div class="kbd">
-            Teclado: <code>1</code><code>2</code><code>3</code><code>4</code> • <code>Enter</code> confirmar • <code>Esc</code> início
+            Teclado: <code>1</code><code>2</code><code>3</code><code>4</code> selecionar • <code>Enter</code> confirmar • <code>Esc</code> início
           </div>
         </div>
       `;
@@ -284,19 +400,42 @@
     result(){
       const r = state.round;
       const ok = r?.lastResult?.ok;
-      const title = ok ? "Parabéns!" : "Que pena!";
-      const msg = ok
-        ? `Você concluiu todas as perguntas e chegou ao topo!`
-        : `Você errou e o jogo terminou.`;
+      const gaveUp = r?.gaveUp;
+      
+      let title, msg, emoji;
+      if(gaveUp){
+        title = "Você desistiu! 😅";
+        msg = "Tudo bem, o importante é ter tentado! Que tal jogar de novo? Você pode conseguir mais!";
+        emoji = "🎄";
+      } else if(ok){
+        title = "Parabéns, campeão! 🎉";
+        msg = "Você arrasou e conquistou o prêmio máximo! Jesus deve estar orgulhoso do seu conhecimento! 🌟";
+        emoji = "🏆";
+      } else {
+        title = "Quase lá! 💪";
+        msg = "Não foi dessa vez, mas você foi muito bem! O importante é ter participado. Vamos tentar de novo?";
+        emoji = "🎁";
+      }
+
+      const motivational = [
+        "Que Deus abençoe você e sua família neste Natal! 🙏",
+        "Continue estudando a Palavra e você irá cada vez mais longe! 📖",
+        "Cada pergunta é uma oportunidade de aprender mais sobre Jesus! ✨",
+        "O conhecimento é um presente, e você está no caminho certo! 🎄"
+      ];
+      const randomMsg = motivational[Math.floor(Math.random() * motivational.length)];
 
       const summary = r ? `
         <div class="card" style="padding:16px 18px">
-          <div class="row" style="justify-content:space-between">
-            <div class="pill"><span>Acertos:</span> <strong>${r.correctCount}</strong></div>
-            <div class="pill"><span>Premiação:</span> <strong>R$ ${r.won}</strong></div>
+          <div class="row" style="justify-content:space-between; margin-bottom: 12px">
+            <div class="pill"><span>Acertos:</span> <strong>${r.correctCount} ✓</strong></div>
+            <div class="pill"><span>${emoji} Premiação:</span> <strong style="color: var(--christmas-gold)">R$ ${r.won}</strong></div>
           </div>
+          <p class="lead" style="margin: 12px 0; text-align: center; font-size: 18px;">
+            ${randomMsg}
+          </p>
           <p class="smallnote" style="margin-top:10px">
-            Dica: você pode jogar novamente para cair perguntas diferentes (as alternativas embaralham).
+            Dica: você pode jogar novamente! As perguntas e alternativas são embaralhadas a cada rodada. 🔄
           </p>
         </div>
       ` : "";
@@ -307,8 +446,8 @@
           <p class="lead">${escapeHtml(msg)}</p>
           ${summary}
           <div class="row" style="margin-top: 10px">
-            <button class="btn primary" id="btnRestart">Jogar novamente</button>
-            <button class="btn" id="btnGoHome">Voltar ao início</button>
+            <button class="btn primary" id="btnRestart">🎮 Jogar Novamente</button>
+            <button class="btn" id="btnGoHome">🏠 Voltar ao Início</button>
           </div>
           <div class="card" style="padding:14px 16px; margin-top: 10px">
             <div class="kbd">
@@ -358,10 +497,9 @@
 
         if(["1","2","3","4"].includes(e.key)){
           const idx = Number(e.key) - 1;
-          // allow choose even if eliminated? we ignore if hidden
           if(state.round && !state.round.eliminated.has(idx)){
             state.focusIndex = idx;
-            choose(idx);
+            selectAnswer(idx);
           }
           return;
         }
@@ -374,9 +512,9 @@
           return;
         }
         if(e.key === "Enter"){
-          // confirm focused selection
-          if(state.round && !state.round.eliminated.has(state.focusIndex)){
-            choose(state.focusIndex);
+          // confirm selected answer
+          if(state.selectedIndex !== null){
+            confirmAnswer();
           }
         }
       }
@@ -385,8 +523,10 @@
 
   function bindHome(){
     $("#btnStart").onclick = ()=>{
+      sounds.welcome();
       state.round = buildRound();
       state.focusIndex = 0;
+      state.selectedIndex = null;
       state.screen = "game";
       state.toast = null;
       render();
@@ -422,7 +562,7 @@
         const idx = Number(el.getAttribute("data-idx"));
         if(state.round.eliminated.has(idx)) return;
         state.focusIndex = idx;
-        choose(idx);
+        selectAnswer(idx);
       };
       el.onfocus = ()=>{
         const idx = Number(el.getAttribute("data-idx"));
@@ -433,9 +573,11 @@
       };
     });
 
-    $("#helpSkip").onclick = ()=> useSkip();
-    $("#helpElim").onclick = ()=> useEliminate();
-    $("#helpHelp").onclick = ()=> useHelp();
+    $("#helpSkip")?.addEventListener("click", ()=> useSkip());
+    $("#helpElim")?.addEventListener("click", ()=> useEliminate());
+    $("#helpHelp")?.addEventListener("click", ()=> useHelp());
+    $("#btnConfirm")?.addEventListener("click", ()=> confirmAnswer());
+    $("#btnGiveUp")?.addEventListener("click", ()=> giveUp());
 
     highlightFocus();
   }
@@ -444,6 +586,7 @@
     $("#btnRestart").onclick = ()=>{
       state.round = buildRound();
       state.focusIndex = 0;
+      state.selectedIndex = null;
       state.screen = "game";
       state.toast = null;
       render();
@@ -550,6 +693,40 @@
     }
   }
 
+  function selectAnswer(idx){
+    if(state.lock) return;
+    sounds.select();
+    state.selectedIndex = idx;
+    render();
+  }
+
+  function confirmAnswer(){
+    if(state.selectedIndex === null || state.lock) return;
+    choose(state.selectedIndex);
+  }
+
+  function giveUp(){
+    const r = state.round;
+    if(!r || state.lock) return;
+    
+    const canGiveUp = r.helps.skip && r.helps.eliminate && r.helps.help;
+    if(!canGiveUp) {
+      setToast("Não pode desistir ainda!", "Use todos os auxílios primeiro.");
+      return;
+    }
+
+    const ok = window.confirm("Tem certeza que deseja desistir? Você receberá apenas metade do valor conquistado.");
+    if(!ok) return;
+
+    sounds.giveUp();
+    // Give up: receive half of earned value
+    r.won = Math.floor(r.won / 2);
+    r.gaveUp = true;
+    r.lastResult = { ok: false, correctIndex: null };
+    state.screen = "result";
+    render();
+  }
+
   function choose(idx){
     const r = state.round;
     if(!r || state.lock) return;
@@ -579,6 +756,7 @@
         ? q.tip
         : "Boa! Vamos para a próxima.";
 
+      sounds.correct();
       setToast("Resposta correta! 🎉", explain);
 
       window.setTimeout(()=>{
@@ -590,6 +768,8 @@
       const explain = state.settings.showExplanation && q.tip
         ? q.tip
         : "Não foi dessa vez — mas valeu a participação!";
+      
+      sounds.wrong();
       setToast("Resposta incorreta ❌", explain);
 
       window.setTimeout(()=>{
@@ -612,6 +792,7 @@
       return;
     }
     state.focusIndex = 0;
+    state.selectedIndex = null;
     state.toast = state.toast; // keep toast if any
     render();
   }
@@ -621,6 +802,7 @@
     if(!r) return;
     r.finished = true;
     if(success){
+      sounds.gameEnd();
       r.won = PRIZES[PRIZES.length-1];
       r.lastResult = { ok: true, correctIndex: null };
     }else{
