@@ -9,6 +9,74 @@
   const PRIZES = [2, 5, 10, 20, 50, 100];
   const STORAGE_KEY = "show_do_cristao_settings_v1";
 
+  // Sound System
+  const sounds = {
+    playTone(frequency, duration, type = 'sine') {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.frequency.value = frequency;
+        osc.type = type;
+        
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+        
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + duration);
+      } catch(e) {
+        console.log('Sound not supported');
+      }
+    },
+    
+    welcome() {
+      // Joyful ascending melody
+      setTimeout(() => this.playTone(523.25, 0.15), 0);    // C5
+      setTimeout(() => this.playTone(659.25, 0.15), 150);  // E5
+      setTimeout(() => this.playTone(783.99, 0.25), 300);  // G5
+    },
+    
+    select() {
+      // Quick click sound
+      this.playTone(800, 0.08);
+    },
+    
+    correct() {
+      // Success melody
+      setTimeout(() => this.playTone(523.25, 0.12), 0);    // C5
+      setTimeout(() => this.playTone(659.25, 0.12), 120);  // E5
+      setTimeout(() => this.playTone(783.99, 0.12), 240);  // G5
+      setTimeout(() => this.playTone(1046.50, 0.25), 360); // C6
+    },
+    
+    wrong() {
+      // Descending sad tones
+      setTimeout(() => this.playTone(400, 0.15), 0);
+      setTimeout(() => this.playTone(300, 0.15), 150);
+      setTimeout(() => this.playTone(200, 0.3), 300);
+    },
+    
+    gameEnd() {
+      // Triumphant fanfare
+      setTimeout(() => this.playTone(523.25, 0.15), 0);
+      setTimeout(() => this.playTone(659.25, 0.15), 150);
+      setTimeout(() => this.playTone(783.99, 0.15), 300);
+      setTimeout(() => this.playTone(1046.50, 0.15), 450);
+      setTimeout(() => this.playTone(1318.51, 0.4), 600);
+    },
+    
+    giveUp() {
+      // Gentle descending tones
+      setTimeout(() => this.playTone(500, 0.2), 0);
+      setTimeout(() => this.playTone(400, 0.2), 200);
+      setTimeout(() => this.playTone(350, 0.3), 400);
+    }
+  };
+
   function $(sel){ return document.querySelector(sel); }
   function escapeHtml(s){
     return (s ?? "").toString()
@@ -440,6 +508,7 @@
 
   function bindHome(){
     $("#btnStart").onclick = ()=>{
+      sounds.welcome();
       state.round = buildRound();
       state.focusIndex = 0;
       state.selectedIndex = null;
@@ -611,6 +680,7 @@
 
   function selectAnswer(idx){
     if(state.lock) return;
+    sounds.select();
     state.selectedIndex = idx;
     render();
   }
@@ -633,6 +703,7 @@
     const ok = window.confirm("Tem certeza que deseja desistir? Você receberá apenas metade do valor conquistado.");
     if(!ok) return;
 
+    sounds.giveUp();
     // Give up: receive half of earned value
     r.won = Math.floor(r.won / 2);
     r.gaveUp = true;
@@ -670,6 +741,7 @@
         ? q.tip
         : "Boa! Vamos para a próxima.";
 
+      sounds.correct();
       setToast("Resposta correta! 🎉", explain);
 
       window.setTimeout(()=>{
@@ -681,6 +753,8 @@
       const explain = state.settings.showExplanation && q.tip
         ? q.tip
         : "Não foi dessa vez — mas valeu a participação!";
+      
+      sounds.wrong();
       setToast("Resposta incorreta ❌", explain);
 
       window.setTimeout(()=>{
@@ -713,6 +787,7 @@
     if(!r) return;
     r.finished = true;
     if(success){
+      sounds.gameEnd();
       r.won = PRIZES[PRIZES.length-1];
       r.lastResult = { ok: true, correctIndex: null };
     }else{
