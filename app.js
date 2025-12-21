@@ -11,9 +11,24 @@
 
   // Sound System
   const sounds = {
+    ctx: null,
+    
+    getContext() {
+      if (!this.ctx) {
+        try {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) {
+          console.log('Sound not supported');
+        }
+      }
+      return this.ctx;
+    },
+    
     playTone(frequency, duration, type = 'sine') {
+      const ctx = this.getContext();
+      if (!ctx) return;
+      
       try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         
@@ -29,7 +44,7 @@
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + duration);
       } catch(e) {
-        console.log('Sound not supported');
+        console.log('Sound playback failed');
       }
     },
     

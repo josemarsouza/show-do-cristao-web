@@ -50,6 +50,12 @@ body::before {
   to { background-position: 0 200px, 100px 300px, 50px 150px; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
+
 .app{
   height:100%;
   width:100%;
