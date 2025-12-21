@@ -806,8 +806,8 @@
       r.won = PRIZES[PRIZES.length-1];
       r.lastResult = { ok: true, correctIndex: null };
     }else{
-      // r.won already last achieved; if none, keep 0
-      r.won = r.won || 0;
+      // New rule: if participant makes a mistake, they don't win a prize
+      r.won = 0;
     }
     state.screen = "result";
     render();
