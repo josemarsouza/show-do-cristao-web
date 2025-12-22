@@ -261,6 +261,36 @@ body::after {
   justify-content:center;
 }
 
+.hero-logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+  animation: logoEntrance 0.8s ease-out;
+}
+
+.hero-logo img{
+  height: clamp(80px, 12vw, 140px);
+  width: auto;
+  filter: drop-shadow(0 8px 24px rgba(245, 196, 75, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.hero-logo img:hover{
+  transform: scale(1.05);
+}
+
+@keyframes logoEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .title-big{
   font-size: clamp(34px, 4.4vw, 52px);
   margin:0;
