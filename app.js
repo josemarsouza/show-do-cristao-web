@@ -320,7 +320,7 @@
       return `
         <div class="center">
           <div class="hero-logo">
-            <img src="logo.png" alt="Show do Cristão Logo" onerror="this.style.display='none'" />
+            <img src="logo.png" alt="Show do Cristão Logo" onerror="this.style.display=\\'none\\'" />
           </div>
           <h2 class="title-big">Quiz Natalino em Família! 🎁</h2>
           <p class="lead">
