@@ -8,6 +8,9 @@
 (function(){
   const PRIZES = [2, 5, 10, 20, 50, 100];
   const STORAGE_KEY = "show_do_cristao_settings_v1";
+  const MAX_QUESTION_RETRIES = 10;
+  const FEEDBACK_MODAL_DURATION_CORRECT = 2200;
+  const FEEDBACK_MODAL_DURATION_WRONG = 2500;
 
   // Sound System
   const sounds = {
@@ -129,10 +132,11 @@
     settings: loadSettings(),
     playerName: "", // player's name
     round: null,
-    focusIndex: 0,
+    focusIndex: -1, // -1 means no alternative focused
     selectedIndex: null, // index selected but not yet confirmed
     toast: null,
     lock: false, // prevents double submit during animations
+    feedbackModal: null, // { type: 'correct' | 'wrong', message: string }
   };
 
   function buildRound(){
@@ -235,6 +239,7 @@
             : templates.result()}
           </div>
           ${state.toast ? templates.toast(state.toast) : ""}
+          ${state.feedbackModal ? templates.feedbackModal(state.feedbackModal) : ""}
         </div>
       `;
     },
@@ -506,6 +511,22 @@
           </div>
         </div>
       `;
+    },
+    feedbackModal(f){
+      const isCorrect = f.type === 'correct';
+      const icon = isCorrect ? '🎉' : '😢';
+      const title = isCorrect ? 'Resposta Correta!' : 'Resposta Incorreta';
+      const cssClass = isCorrect ? 'correct' : 'wrong';
+      
+      return `
+        <div class="feedback-modal">
+          <div class="feedback-content ${cssClass}">
+            <div class="feedback-icon">${icon}</div>
+            <h2 class="feedback-title">${title}</h2>
+            <p class="feedback-message">${escapeHtml(f.message)}</p>
+          </div>
+        </div>
+      `;
     }
   };
 
@@ -578,7 +599,7 @@
       
       sounds.welcome();
       state.round = buildRound();
-      state.focusIndex = 0;
+      state.focusIndex = -1;
       state.selectedIndex = null;
       state.screen = "game";
       state.toast = null;
@@ -638,7 +659,7 @@
   function bindResult(){
     $("#btnRestart").onclick = ()=>{
       state.round = buildRound();
-      state.focusIndex = 0;
+      state.focusIndex = -1;
       state.selectedIndex = null;
       state.screen = "game";
       state.toast = null;
@@ -666,17 +687,19 @@
   function highlightFocus(){
     const nodes = document.querySelectorAll(".answer");
     nodes.forEach(n=> n.classList.remove("focused"));
-    const focus = document.querySelector(`.answer[data-idx="${state.focusIndex}"]`);
-    if(focus && !focus.classList.contains("hidden")){
-      focus.classList.add("focused");
-      // keep in view if needed
-      focus.scrollIntoView({block:"nearest", inline:"nearest"});
+    if(state.focusIndex >= 0){
+      const focus = document.querySelector(`.answer[data-idx="${state.focusIndex}"]`);
+      if(focus && !focus.classList.contains("hidden")){
+        focus.classList.add("focused");
+        // keep in view if needed
+        focus.scrollIntoView({block:"nearest", inline:"nearest"});
+      }
     }
   }
 
   function moveFocus(dir){
     if(!state.round) return;
-    let idx = state.focusIndex;
+    let idx = Math.max(state.focusIndex, 0);
     for(let tries=0; tries<6; tries++){
       idx = (idx + dir + 4) % 4;
       if(!state.round.eliminated.has(idx)){
@@ -691,9 +714,58 @@
     const r = state.round;
     if(!r || r.helps.skip) return;
     r.helps.skip = true;
+    
+    // Pick a new question from the same difficulty level
+    const bank = window.QUESTION_BANK;
+    const idx = r.prizeIndex;
+    const pick = (arr)=> shuffle(arr)[0];
+    
+    const easyPool = bank.easy;
+    const medPool = bank.medium;
+    const hardPool = bank.hard;
+    const vhPool = bank.veryhard;
+    const extremePool = bank.extreme;
+    
+    // Determine difficulty based on prize index and mode
+    let pool;
+    if(state.settings.kidsMode){
+      pool = idx < 2 ? easyPool : idx < 4 ? medPool : hardPool;
+    } else {
+      pool = idx === 0 ? easyPool 
+           : idx <= 2 ? medPool 
+           : idx === 3 ? hardPool 
+           : idx === 4 ? vhPool 
+           : extremePool;
+    }
+    
+    // Pick a different question from the pool
+    const currentQ = r.questions[idx].q;
+    let newQ = pick(pool);
+    let tries = 0;
+    while(newQ.q === currentQ && tries < MAX_QUESTION_RETRIES){
+      newQ = pick(pool);
+      tries++;
+    }
+    
+    // Shuffle alternatives
+    const indices = [0,1,2,3];
+    const shuffledIdx = shuffle(indices);
+    const answers = shuffledIdx.map(i=> newQ.a[i]);
+    const correct = shuffledIdx.indexOf(newQ.c);
+    
+    r.questions[idx] = {
+      q: newQ.q,
+      a: answers,
+      c: correct,
+      tip: newQ.tip || "",
+    };
+    
     r.eliminated = new Set(); // reset eliminations on skip
-    setToast("Pular usado!", "Você avançou para a próxima pergunta.");
-    nextQuestion(true);
+    state.selectedIndex = null;
+    state.focusIndex = -1;
+    
+    setToast("Pular usado!", "Nova pergunta no mesmo nível.");
+    render();
   }
 
   function useEliminate(){
@@ -707,8 +779,8 @@
     toRemove.forEach(i=> r.eliminated.add(i));
 
     // adjust focus if focused got eliminated
-    if(r.eliminated.has(state.focusIndex)){
-      state.focusIndex = [0,1,2,3].find(i=> !r.eliminated.has(i)) ?? 0;
+    if(state.focusIndex >= 0 && r.eliminated.has(state.focusIndex)){
+      state.focusIndex = [0,1,2,3].find(i=> !r.eliminated.has(i)) ?? -1;
     }
     setToast("Eliminadas duas alternativas!", "Agora ficou mais fácil 😉");
     render();
@@ -720,25 +792,48 @@
     r.helps.help = true;
 
     const q = r.questions[r.prizeIndex];
-    // 50/50: either show tip or show audience guess
-    const showTip = Math.random() < 0.55 && q.tip;
+    const level = r.prizeIndex; // 0-5, where 0 is easiest
+    
+    // Adjust help strength based on level
+    // Lower levels: more likely to show tip and higher accuracy in audience vote
+    // Higher levels: less likely to show tip and lower accuracy in audience vote
+    const tipProbability = Math.max(0.2, 0.7 - (level * 0.1)); // 70% at level 0, 20% at level 5
+    const showTip = Math.random() < tipProbability && q.tip;
+    
     if(showTip){
       setToast("Dica", q.tip);
     }else{
       const correct = q.c;
       const perc = [0,0,0,0].map(()=> 0);
-      // give more weight to correct
+      
+      // Adjust correct answer percentage based on level
+      // Level 0-1: 70-85% (very helpful)
+      // Level 2-3: 55-70% (moderately helpful)
+      // Level 4-5: 40-55% (less helpful)
+      let minPerc, maxPerc;
+      if(level <= 1){
+        minPerc = 70;
+        maxPerc = 85;
+      } else if(level <= 3){
+        minPerc = 55;
+        maxPerc = 70;
+      } else {
+        minPerc = 40;
+        maxPerc = 55;
+      }
+      
       let remaining = 100;
-      const correctPerc = 55 + Math.floor(Math.random()*26); // 55-80
+      const correctPerc = minPerc + Math.floor(Math.random() * (maxPerc - minPerc + 1));
       perc[correct] = correctPerc;
       remaining -= correctPerc;
+      
       const others = [0,1,2,3].filter(i=> i!==correct && !r.eliminated.has(i));
-      const parts = others.length ? others.length : 3;
       for(let i=0;i<others.length;i++){
         const v = i===others.length-1 ? remaining : Math.floor(Math.random()*(remaining+1));
         perc[others[i]] = v;
         remaining -= v;
       }
+      
       const letters = ["A","B","C","D"];
       const top2 = [0,1,2,3].sort((i,j)=> perc[j]-perc[i]).slice(0,2)
         .map(i=> `${letters[i]} (${perc[i]}%)`).join(" • ");
@@ -810,12 +905,16 @@
         : "Boa! Vamos para a próxima.";
 
       sounds.correct();
-      setToast("Resposta correta! 🎉", explain);
+      
+      // Show feedback modal
+      state.feedbackModal = { type: 'correct', message: explain };
+      render();
 
       window.setTimeout(()=>{
+        state.feedbackModal = null;
         nextQuestion(false);
         state.lock = false;
-      }, 900);
+      }, FEEDBACK_MODAL_DURATION_CORRECT);
     }else{
       // finish - keep last won (if no correct yet, 0)
       const explain = state.settings.showExplanation && q.tip
@@ -823,12 +922,16 @@
         : "Não foi dessa vez — mas valeu a participação!";
       
       sounds.wrong();
-      setToast("Resposta incorreta ❌", explain);
+      
+      // Show feedback modal
+      state.feedbackModal = { type: 'wrong', message: explain };
+      render();
 
       window.setTimeout(()=>{
+        state.feedbackModal = null;
         finishGame(false);
         state.lock = false;
-      }, 1100);
+      }, FEEDBACK_MODAL_DURATION_WRONG);
     }
   }
 
@@ -844,7 +947,7 @@
       finishGame(true);
       return;
     }
-    state.focusIndex = 0;
+    state.focusIndex = -1;
     state.selectedIndex = null;
     state.toast = state.toast; // keep toast if any
     render();

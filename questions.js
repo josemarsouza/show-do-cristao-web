@@ -109,6 +109,116 @@ window.QUESTION_BANK = {
       ],
       "c": 1,
       "tip": "Pedro negou conhecer Jesus três vezes, como Jesus havia predito."
+    },
+    {
+      "q": "Quantos Evangelhos existem na Bíblia?",
+      "a": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "c": 2,
+      "tip": "Os quatro evangelhos são: Mateus, Marcos, Lucas e João."
+    },
+    {
+      "q": "Em que cidade Jesus cresceu?",
+      "a": [
+        "Belém",
+        "Nazaré",
+        "Cafarnaum",
+        "Jerusalém"
+      ],
+      "c": 1,
+      "tip": "Jesus foi criado em Nazaré, na Galileia."
+    },
+    {
+      "q": "Quem anunciou a Maria que ela seria mãe de Jesus?",
+      "a": [
+        "Anjo Miguel",
+        "Anjo Rafael",
+        "Anjo Gabriel",
+        "Um profeta"
+      ],
+      "c": 2,
+      "tip": "O anjo Gabriel apareceu a Maria anunciando que ela conceberia Jesus."
+    },
+    {
+      "q": "O que os magos levaram para Jesus?",
+      "a": [
+        "Ouro, incenso e sal",
+        "Ouro, incenso e mirra",
+        "Prata, óleo e mirra",
+        "Bronze, incenso e azeite"
+      ],
+      "c": 1,
+      "tip": "Os magos do oriente presentearam Jesus com ouro, incenso e mirra."
+    },
+    {
+      "q": "Quantos anos Jesus tinha quando começou seu ministério?",
+      "a": [
+        "20 anos",
+        "25 anos",
+        "30 anos",
+        "35 anos"
+      ],
+      "c": 2,
+      "tip": "Jesus tinha cerca de 30 anos quando iniciou seu ministério público."
+    },
+    {
+      "q": "Qual foi o último mandamento que Jesus deu aos seus discípulos?",
+      "a": [
+        "Não roubar",
+        "Amar uns aos outros",
+        "Guardar o sábado",
+        "Honrar pai e mãe"
+      ],
+      "c": 1,
+      "tip": "Jesus disse: 'Que vos ameis uns aos outros como eu vos amei.'"
+    },
+    {
+      "q": "Quem ajudou Jesus a carregar a cruz?",
+      "a": [
+        "João",
+        "Pedro",
+        "Simão Cireneu",
+        "José de Arimateia"
+      ],
+      "c": 2,
+      "tip": "Simão de Cirene foi obrigado a carregar a cruz de Jesus."
+    },
+    {
+      "q": "O que Jesus disse ser na frase 'Eu sou o pão da ___'?",
+      "a": [
+        "Vida",
+        "Verdade",
+        "Luz",
+        "Salvação"
+      ],
+      "c": 0,
+      "tip": "Jesus disse: 'Eu sou o pão da vida' (João 6:35)."
+    },
+    {
+      "q": "Quem foi o primeiro mártir cristão?",
+      "a": [
+        "Pedro",
+        "Paulo",
+        "Estêvão",
+        "Tiago"
+      ],
+      "c": 2,
+      "tip": "Estêvão foi apedrejado por sua fé, tornando-se o primeiro mártir."
+    },
+    {
+      "q": "Qual animal Jesus usou para entrar em Jerusalém?",
+      "a": [
+        "Cavalo",
+        "Camelo",
+        "Jumento",
+        "Boi"
+      ],
+      "c": 2,
+      "tip": "Jesus entrou em Jerusalém montado em um jumento, cumprindo a profecia."
     }
   ],
   "medium": [
@@ -221,6 +331,116 @@ window.QUESTION_BANK = {
       ],
       "c": 1,
       "tip": "Bartimeu, filho de Timeu, foi curado da cegueira."
+    },
+    {
+      "q": "Quantos homens Jesus alimentou na multiplicação dos pães (sem contar mulheres e crianças)?",
+      "a": [
+        "3.000",
+        "4.000",
+        "5.000",
+        "7.000"
+      ],
+      "c": 2,
+      "tip": "Cerca de 5.000 homens foram alimentados, sem contar mulheres e crianças."
+    },
+    {
+      "q": "Qual era a idade de Jesus quando seus pais o encontraram no templo?",
+      "a": [
+        "10 anos",
+        "12 anos",
+        "15 anos",
+        "18 anos"
+      ],
+      "c": 1,
+      "tip": "Jesus tinha 12 anos quando foi encontrado ensinando no templo."
+    },
+    {
+      "q": "Quem pediu a cabeça de João Batista?",
+      "a": [
+        "Salomé",
+        "Herodias",
+        "Pilatos",
+        "Herodes"
+      ],
+      "c": 0,
+      "tip": "Salomé, a pedido de sua mãe Herodias, pediu a cabeça de João Batista."
+    },
+    {
+      "q": "Qual discípulo era chamado de 'o incrédulo'?",
+      "a": [
+        "Pedro",
+        "Tomé",
+        "Judas",
+        "Filipe"
+      ],
+      "c": 1,
+      "tip": "Tomé duvidou da ressurreição até ver Jesus pessoalmente."
+    },
+    {
+      "q": "Onde Jesus realizou seu primeiro milagre?",
+      "a": [
+        "Jerusalém",
+        "Cafarnaum",
+        "Caná da Galileia",
+        "Nazaré"
+      ],
+      "c": 2,
+      "tip": "O primeiro milagre foi em Caná da Galileia, transformando água em vinho."
+    },
+    {
+      "q": "Quem foi o governador romano que condenou Jesus?",
+      "a": [
+        "Herodes",
+        "César",
+        "Pôncio Pilatos",
+        "Tibério"
+      ],
+      "c": 2,
+      "tip": "Pôncio Pilatos foi o governador romano que ordenou a crucificação de Jesus."
+    },
+    {
+      "q": "Quantos discípulos Jesus enviou de dois em dois para pregar?",
+      "a": [
+        "12",
+        "40",
+        "70",
+        "100"
+      ],
+      "c": 2,
+      "tip": "Jesus enviou 70 discípulos de dois em dois para anunciarem o Reino."
+    },
+    {
+      "q": "Qual era a profissão de Mateus antes de seguir Jesus?",
+      "a": [
+        "Pescador",
+        "Carpinteiro",
+        "Cobrador de impostos",
+        "Médico"
+      ],
+      "c": 2,
+      "tip": "Mateus (Levi) era publicano, cobrador de impostos."
+    },
+    {
+      "q": "Em qual jardim Jesus orou antes de ser preso?",
+      "a": [
+        "Jardim do Éden",
+        "Jardim de Getsêmani",
+        "Jardim de José",
+        "Jardim do Templo"
+      ],
+      "c": 1,
+      "tip": "Jesus orou no Jardim de Getsêmani antes de sua prisão."
+    },
+    {
+      "q": "Quem preparou o corpo de Jesus para o sepultamento?",
+      "a": [
+        "Pedro e João",
+        "José de Arimateia e Nicodemos",
+        "Maria e Marta",
+        "Os soldados romanos"
+      ],
+      "c": 1,
+      "tip": "José de Arimateia e Nicodemos prepararam o corpo de Jesus."
     }
   ],
   "hard": [
@@ -324,7 +544,7 @@ window.QUESTION_BANK = {
       "tip": "Jesus cresceu em Nazaré, por isso era chamado Nazareno."
     },
     {
-      "q": "Quantos eram os dez mandamentos que Moisés recebeu e Jesus resumiu em dois?",
+      "q": "Quais eram os mandamentos que Moisés recebeu e Jesus resumiu em dois?",
       "a": [
         "Amar a Deus e ao próximo",
         "Não matar e não roubar",
@@ -333,6 +553,116 @@ window.QUESTION_BANK = {
       ],
       "c": 0,
       "tip": "Jesus disse: amar a Deus sobre todas as coisas e ao próximo como a si mesmo."
+    },
+    {
+      "q": "Qual parábola fala de um homem que encontrou um tesouro escondido em um campo?",
+      "a": [
+        "O semeador",
+        "O tesouro escondido",
+        "A pérola de grande valor",
+        "Os talentos"
+      ],
+      "c": 1,
+      "tip": "O homem vendeu tudo que tinha para comprar o campo com o tesouro."
+    },
+    {
+      "q": "Quantas vezes Pedro perguntou a Jesus sobre perdoar o irmão?",
+      "a": [
+        "Até 3 vezes",
+        "Até 7 vezes",
+        "Até 70 vezes",
+        "Até 490 vezes"
+      ],
+      "c": 1,
+      "tip": "Pedro perguntou se deveria perdoar até 7 vezes, mas Jesus respondeu: até 70 vezes 7."
+    },
+    {
+      "q": "Qual era o nome do sumo sacerdote que interrogou Jesus?",
+      "a": [
+        "Anás",
+        "Caifás",
+        "Pilatos",
+        "Herodes"
+      ],
+      "c": 1,
+      "tip": "Caifás era o sumo sacerdote que presidiu o julgamento de Jesus."
+    },
+    {
+      "q": "Em qual língua estava escrita a inscrição na cruz de Jesus?",
+      "a": [
+        "Apenas em hebraico",
+        "Apenas em latim",
+        "Hebraico, grego e latim",
+        "Aramaico e grego"
+      ],
+      "c": 2,
+      "tip": "A inscrição 'INRI' estava em três línguas: hebraico, grego e latim."
+    },
+    {
+      "q": "Quantos dias após a ressurreição Jesus apareceu aos discípulos no cenáculo?",
+      "a": [
+        "No mesmo dia",
+        "3 dias depois",
+        "7 dias depois",
+        "8 dias depois"
+      ],
+      "c": 3,
+      "tip": "Jesus apareceu no cenáculo 8 dias depois, quando Tomé estava presente."
+    },
+    {
+      "q": "Qual era a profissão de Lucas, autor do terceiro Evangelho?",
+      "a": [
+        "Pescador",
+        "Médico",
+        "Fariseu",
+        "Sacerdote"
+      ],
+      "c": 1,
+      "tip": "Lucas era médico e companheiro de Paulo."
+    },
+    {
+      "q": "Em qual monte Jesus foi transfigurado?",
+      "a": [
+        "Monte Sinai",
+        "Monte das Oliveiras",
+        "Monte Carmelo",
+        "Monte Tabor"
+      ],
+      "c": 3,
+      "tip": "A tradição cristã identifica o Monte Tabor como o local da Transfiguração."
+    },
+    {
+      "q": "Quem eram os dois homens que apareceram com Jesus na Transfiguração?",
+      "a": [
+        "Abraão e Isaac",
+        "Moisés e Elias",
+        "Davi e Salomão",
+        "Isaías e Jeremias"
+      ],
+      "c": 1,
+      "tip": "Moisés e Elias apareceram conversando com Jesus na Transfiguração."
+    },
+    {
+      "q": "Qual foi o sinal que Jesus deu aos fariseus quando pediram um milagre?",
+      "a": [
+        "O sinal de Jonas",
+        "O sinal de Moisés",
+        "O sinal de Elias",
+        "O sinal de Davi"
+      ],
+      "c": 0,
+      "tip": "Jesus disse que nenhum sinal seria dado, exceto o sinal de Jonas (3 dias)."
+    },
+    {
+      "q": "Quantas bem-aventuranças Jesus proclamou no Sermão do Monte?",
+      "a": [
+        "5",
+        "7",
+        "8",
+        "10"
+      ],
+      "c": 2,
+      "tip": "Jesus proclamou 8 bem-aventuranças no início do Sermão do Monte."
     }
   ],
   "veryhard": [
@@ -445,6 +775,116 @@ window.QUESTION_BANK = {
       ],
       "c": 1,
       "tip": "Moisés e Elias apareceram conversando com Jesus na transfiguração."
+    },
+    {
+      "q": "Qual era o nome do pai de João Batista?",
+      "a": [
+        "José",
+        "Zacarias",
+        "Simeão",
+        "Joaquim"
+      ],
+      "c": 1,
+      "tip": "Zacarias era sacerdote e pai de João Batista."
+    },
+    {
+      "q": "Quantos foram os reis magos que visitaram Jesus?",
+      "a": [
+        "A Bíblia não especifica",
+        "2",
+        "3",
+        "4"
+      ],
+      "c": 0,
+      "tip": "A Bíblia não diz quantos magos eram, apenas que trouxeram 3 presentes."
+    },
+    {
+      "q": "Qual discípulo era irmão de Pedro?",
+      "a": [
+        "Tiago",
+        "João",
+        "André",
+        "Filipe"
+      ],
+      "c": 2,
+      "tip": "André era irmão de Simão Pedro, ambos pescadores."
+    },
+    {
+      "q": "Em qual Evangelho encontramos a frase 'No princípio era o Verbo'?",
+      "a": [
+        "Mateus",
+        "Marcos",
+        "Lucas",
+        "João"
+      ],
+      "c": 3,
+      "tip": "O Evangelho de João começa com 'No princípio era o Verbo'."
+    },
+    {
+      "q": "Quem foi o rei que mandou matar os meninos em Belém?",
+      "a": [
+        "Herodes o Grande",
+        "Herodes Antipas",
+        "Pilatos",
+        "César Augusto"
+      ],
+      "c": 0,
+      "tip": "Herodes o Grande ordenou a matança dos inocentes em Belém."
+    },
+    {
+      "q": "Qual era o nome da mãe de João Batista?",
+      "a": [
+        "Maria",
+        "Ana",
+        "Isabel",
+        "Rebeca"
+      ],
+      "c": 2,
+      "tip": "Isabel, prima de Maria, era mãe de João Batista."
+    },
+    {
+      "q": "Quantos anos a mulher com fluxo de sangue sofria antes de ser curada por Jesus?",
+      "a": [
+        "7 anos",
+        "10 anos",
+        "12 anos",
+        "20 anos"
+      ],
+      "c": 2,
+      "tip": "A mulher sofria há 12 anos antes de tocar na veste de Jesus."
+    },
+    {
+      "q": "Qual era a aldeia de Maria e Marta?",
+      "a": [
+        "Nazaré",
+        "Betânia",
+        "Caná",
+        "Emaús"
+      ],
+      "c": 1,
+      "tip": "Maria e Marta moravam em Betânia, perto de Jerusalém."
+    },
+    {
+      "q": "Qual foi o primeiro discípulo chamado por Jesus?",
+      "a": [
+        "Pedro",
+        "André",
+        "Tiago",
+        "João"
+      ],
+      "c": 1,
+      "tip": "André foi o primeiro a seguir Jesus, depois chamou seu irmão Pedro."
+    },
+    {
+      "q": "Em que língua Jesus normalmente falava?",
+      "a": [
+        "Hebraico",
+        "Grego",
+        "Aramaico",
+        "Latim"
+      ],
+      "c": 2,
+      "tip": "Jesus falava aramaico, a língua comum do povo na Palestina."
     }
   ],
   "extreme": [
@@ -612,6 +1052,116 @@ window.QUESTION_BANK = {
       ],
       "c": 1,
       "tip": "Salomé era mãe de Tiago e João, possivelmente irmã de Maria."
+    },
+    {
+      "q": "Qual era o nome do homem rico que Jesus visitou e que subiu em uma árvore para vê-lo?",
+      "a": [
+        "Zaqueu",
+        "Mateus",
+        "José de Arimateia",
+        "Lázaro"
+      ],
+      "c": 0,
+      "tip": "Zaqueu era baixo de estatura e subiu em um sicômoro em Jericó."
+    },
+    {
+      "q": "Quantas vezes Pedro negou conhecer Jesus?",
+      "a": [
+        "Uma vez",
+        "Duas vezes",
+        "Três vezes",
+        "Quatro vezes"
+      ],
+      "c": 2,
+      "tip": "Pedro negou Jesus três vezes antes do galo cantar, como previsto."
+    },
+    {
+      "q": "Qual discípulo era também chamado de Tadeu?",
+      "a": [
+        "Simão Zelote",
+        "Judas (não Iscariotes)",
+        "Matias",
+        "Filipe"
+      ],
+      "c": 1,
+      "tip": "Judas filho de Tiago, também chamado Tadeu, para diferenciá-lo de Judas Iscariotes."
+    },
+    {
+      "q": "Em qual cidade Jesus curou dez leprosos?",
+      "a": [
+        "Samaria",
+        "Galileia",
+        "Entre Samaria e Galileia",
+        "Judeia"
+      ],
+      "c": 2,
+      "tip": "Jesus estava a caminho de Jerusalém, passando entre Samaria e Galileia (Lucas 17:11)."
+    },
+    {
+      "q": "Quantos dias Lázaro estava morto quando Jesus o ressuscitou?",
+      "a": [
+        "1 dia",
+        "2 dias",
+        "3 dias",
+        "4 dias"
+      ],
+      "c": 3,
+      "tip": "Lázaro estava no túmulo havia quatro dias quando Jesus chegou."
+    },
+    {
+      "q": "Qual era a profissão de José, pai adotivo de Jesus?",
+      "a": [
+        "Pescador",
+        "Carpinteiro (tektōn)",
+        "Pastor",
+        "Agricultor"
+      ],
+      "c": 1,
+      "tip": "José era tekton, termo grego para carpinteiro ou artesão."
+    },
+    {
+      "q": "Quem substituiu Judas Iscariotes entre os doze apóstolos?",
+      "a": [
+        "Paulo",
+        "Barnabé",
+        "Matias",
+        "Silas"
+      ],
+      "c": 2,
+      "tip": "Matias foi escolhido por sorteio para substituir Judas (Atos 1:26)."
+    },
+    {
+      "q": "Em qual parábola Jesus menciona 'trabalhadores da primeira e da última hora'?",
+      "a": [
+        "Os talentos",
+        "Os trabalhadores da vinha",
+        "As dez virgens",
+        "O filho pródigo"
+      ],
+      "c": 1,
+      "tip": "A parábola dos trabalhadores da vinha ensina sobre a generosidade de Deus."
+    },
+    {
+      "q": "Quantos pães Jesus usou para alimentar quatro mil pessoas?",
+      "a": [
+        "5 pães",
+        "7 pães",
+        "12 pães",
+        "20 pães"
+      ],
+      "c": 1,
+      "tip": "Na segunda multiplicação, Jesus usou 7 pães para alimentar 4 mil."
+    },
+    {
+      "q": "Qual era o nome do centurião romano cuja fé impressionou Jesus?",
+      "a": [
+        "Cornélio",
+        "A Bíblia não menciona seu nome",
+        "Júlio",
+        "Cláudio"
+      ],
+      "c": 1,
+      "tip": "Os evangelhos não revelam o nome do centurião de Cafarnaum."
     }
   ]
 };
