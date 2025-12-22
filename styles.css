@@ -230,6 +230,9 @@ body::after {
     align-items:flex-start;
     gap:4px;
   }
+  .brand > img{
+    height: clamp(40px, 8vw, 48px);
+  }
   .brand .logo-title img{
     height: clamp(40px, 8vw, 48px);
   }
@@ -239,6 +242,10 @@ body::after {
   display:flex;
   align-items:center;
   gap:16px;
+}
+.brand > img{
+  height: clamp(48px, 6vw, 64px);
+  width: auto;
 }
 .brand .logo-title{
   display: flex;
