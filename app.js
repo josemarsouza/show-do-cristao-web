@@ -127,6 +127,7 @@
   const state = {
     screen: "home", // home | settings | game | result
     settings: loadSettings(),
+    playerName: "", // player's name
     round: null,
     focusIndex: 0,
     selectedIndex: null, // index selected but not yet confirmed
@@ -136,7 +137,7 @@
 
   function buildRound(){
     // Select 6 questions: 1 per prize level, difficulty buckets:
-    // Level 0 -> easy, 1-2 -> medium, 3 -> hard, 4-5 -> veryhard
+    // Level 0 -> easy, 1-2 -> medium, 3 -> hard, 4 -> veryhard, 5 -> extreme
     const bank = window.QUESTION_BANK;
     const pick = (arr)=> shuffle(arr)[0];
 
@@ -144,11 +145,12 @@
     const medPool = bank.medium;
     const hardPool = bank.hard;
     const vhPool = bank.veryhard;
+    const extremePool = bank.extreme;
 
     // Kids mode: use easier distribution
     const levels = state.settings.kidsMode
       ? [pick(easyPool), pick(easyPool), pick(medPool), pick(medPool), pick(hardPool), pick(hardPool)]
-      : [pick(easyPool), pick(medPool), pick(medPool), pick(hardPool), pick(vhPool), pick(vhPool)];
+      : [pick(easyPool), pick(medPool), pick(medPool), pick(hardPool), pick(vhPool), pick(extremePool)];
 
     // Ensure unique questions (best effort)
     const unique = [];
@@ -158,7 +160,11 @@
       if(!used.has(key)){ unique.push(q); used.add(key); }
       else{
         // fallback: find another from same bucket
-        const bucket = easyPool.includes(q) ? easyPool : medPool.includes(q) ? medPool : hardPool.includes(q) ? hardPool : vhPool;
+        const bucket = easyPool.includes(q) ? easyPool 
+          : medPool.includes(q) ? medPool 
+          : hardPool.includes(q) ? hardPool 
+          : vhPool.includes(q) ? vhPool 
+          : extremePool;
         const alt = shuffle(bucket).find(x=>{
           const k = x.q + "||" + x.a.join("|");
           return !used.has(k);
@@ -233,6 +239,10 @@
       `;
     },
     header(){
+      const playerInfo = state.playerName 
+        ? `<div class="pill player-name"><span>👤 Jogador:</span> <strong>${escapeHtml(state.playerName)}</strong></div>`
+        : "";
+      
       const right = state.screen === "game" && state.round
         ? `<div class="pill"><span>🎁 Valendo:</span> <strong>R$ ${PRIZES[state.round.prizeIndex]}</strong></div>`
         : state.screen === "result" && state.round
@@ -245,7 +255,10 @@
             <h1>🎅 Show do Cristão 🎄</h1>
             <div class="sub">Quiz Natalino em Família • Jesus é o motivo!</div>
           </div>
-          ${right}
+          <div class="header-right">
+            ${playerInfo}
+            ${right}
+          </div>
         </div>
       `;
     },
@@ -264,6 +277,32 @@
             <strong style="color:var(--christmas-gold)">R$ 100</strong>.
             É só responder e se divertir! 🌟
           </p>
+
+          <div class="card rules-card">
+            <h3 style="margin:0 0 12px; color:var(--christmas-red); font-size: clamp(22px, 2.8vw, 28px);">📜 Regras do Jogo</h3>
+            <ul class="rules-list">
+              <li><strong>6 perguntas</strong> sobre Jesus e a Bíblia</li>
+              <li>Cada acerto aumenta sua <strong style="color:var(--christmas-gold)">premiação</strong></li>
+              <li><strong style="color:var(--christmas-red)">Errou? O jogo termina!</strong> Você não leva prêmio</li>
+              <li>Use <strong>3 ajudas</strong>: 🔄 Pular, ❌ Eliminar 2 alternativas, 💡 Dica</li>
+              <li>Após usar todas as ajudas, pode <strong>desistir</strong> e levar metade do valor</li>
+              <li>Perguntas ficam mais <strong style="color:var(--christmas-red)">difíceis</strong> conforme você avança!</li>
+            </ul>
+          </div>
+
+          <div class="card" style="padding:16px 18px; margin-top: 6px">
+            <label for="playerNameInput" style="display:block; margin-bottom:8px; font-size: clamp(16px, 2vw, 18px); font-weight:600;">
+              👤 Digite seu nome para começar:
+            </label>
+            <input 
+              type="text" 
+              id="playerNameInput" 
+              placeholder="Seu nome..." 
+              maxlength="30"
+              value="${escapeHtml(state.playerName)}"
+              style="width:100%; padding:12px 14px; font-size: clamp(16px, 2vw, 18px); border-radius:12px; border:1px solid var(--border); background:rgba(0,0,0,0.35); color:var(--text); outline:none;"
+            />
+          </div>
 
           <div class="row" style="margin-top:10px">
             <button class="btn primary" id="btnStart">🎅 Começar a Brincadeira!</button>
@@ -522,7 +561,21 @@
   }
 
   function bindHome(){
+    const nameInput = $("#playerNameInput");
+    
+    // Update state when typing
+    if(nameInput){
+      nameInput.oninput = ()=> {
+        state.playerName = nameInput.value.trim();
+      };
+      nameInput.focus();
+    }
+    
     $("#btnStart").onclick = ()=>{
+      // Get the name from input
+      const name = $("#playerNameInput")?.value?.trim() || "";
+      state.playerName = name;
+      
       sounds.welcome();
       state.round = buildRound();
       state.focusIndex = 0;
