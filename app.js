@@ -129,10 +129,11 @@
     settings: loadSettings(),
     playerName: "", // player's name
     round: null,
-    focusIndex: 0,
+    focusIndex: -1, // -1 means no focus initially
     selectedIndex: null, // index selected but not yet confirmed
     toast: null,
     lock: false, // prevents double submit during animations
+    feedbackModal: null, // { type: 'correct' | 'wrong', message: string }
   };
 
   function buildRound(){
@@ -235,6 +236,7 @@
             : templates.result()}
           </div>
           ${state.toast ? templates.toast(state.toast) : ""}
+          ${state.feedbackModal ? templates.feedbackModal(state.feedbackModal) : ""}
         </div>
       `;
     },
@@ -506,6 +508,22 @@
           </div>
         </div>
       `;
+    },
+    feedbackModal(f){
+      const isCorrect = f.type === 'correct';
+      const icon = isCorrect ? '🎉' : '😢';
+      const title = isCorrect ? 'Resposta Correta!' : 'Resposta Incorreta';
+      const cssClass = isCorrect ? 'correct' : 'wrong';
+      
+      return `
+        <div class="feedback-modal">
+          <div class="feedback-content ${cssClass}">
+            <div class="feedback-icon">${icon}</div>
+            <h2 class="feedback-title">${title}</h2>
+            <p class="feedback-message">${escapeHtml(f.message)}</p>
+          </div>
+        </div>
+      `;
     }
   };
 
@@ -578,7 +596,7 @@
       
       sounds.welcome();
       state.round = buildRound();
-      state.focusIndex = 0;
+      state.focusIndex = -1;
       state.selectedIndex = null;
       state.screen = "game";
       state.toast = null;
@@ -638,7 +656,7 @@
   function bindResult(){
     $("#btnRestart").onclick = ()=>{
       state.round = buildRound();
-      state.focusIndex = 0;
+      state.focusIndex = -1;
       state.selectedIndex = null;
       state.screen = "game";
       state.toast = null;
@@ -666,17 +684,19 @@
   function highlightFocus(){
     const nodes = document.querySelectorAll(".answer");
     nodes.forEach(n=> n.classList.remove("focused"));
-    const focus = document.querySelector(`.answer[data-idx="${state.focusIndex}"]`);
-    if(focus && !focus.classList.contains("hidden")){
-      focus.classList.add("focused");
-      // keep in view if needed
-      focus.scrollIntoView({block:"nearest", inline:"nearest"});
+    if(state.focusIndex >= 0){
+      const focus = document.querySelector(`.answer[data-idx="${state.focusIndex}"]`);
+      if(focus && !focus.classList.contains("hidden")){
+        focus.classList.add("focused");
+        // keep in view if needed
+        focus.scrollIntoView({block:"nearest", inline:"nearest"});
+      }
     }
   }
 
   function moveFocus(dir){
     if(!state.round) return;
-    let idx = state.focusIndex;
+    let idx = state.focusIndex >= 0 ? state.focusIndex : 0;
     for(let tries=0; tries<6; tries++){
       idx = (idx + dir + 4) % 4;
       if(!state.round.eliminated.has(idx)){
@@ -707,8 +727,8 @@
     toRemove.forEach(i=> r.eliminated.add(i));
 
     // adjust focus if focused got eliminated
-    if(r.eliminated.has(state.focusIndex)){
-      state.focusIndex = [0,1,2,3].find(i=> !r.eliminated.has(i)) ?? 0;
+    if(state.focusIndex >= 0 && r.eliminated.has(state.focusIndex)){
+      state.focusIndex = [0,1,2,3].find(i=> !r.eliminated.has(i)) ?? -1;
     }
     setToast("Eliminadas duas alternativas!", "Agora ficou mais fácil 😉");
     render();
@@ -810,12 +830,16 @@
         : "Boa! Vamos para a próxima.";
 
       sounds.correct();
-      setToast("Resposta correta! 🎉", explain);
+      
+      // Show feedback modal
+      state.feedbackModal = { type: 'correct', message: explain };
+      render();
 
       window.setTimeout(()=>{
+        state.feedbackModal = null;
         nextQuestion(false);
         state.lock = false;
-      }, 900);
+      }, 2200);
     }else{
       // finish - keep last won (if no correct yet, 0)
       const explain = state.settings.showExplanation && q.tip
@@ -823,12 +847,16 @@
         : "Não foi dessa vez — mas valeu a participação!";
       
       sounds.wrong();
-      setToast("Resposta incorreta ❌", explain);
+      
+      // Show feedback modal
+      state.feedbackModal = { type: 'wrong', message: explain };
+      render();
 
       window.setTimeout(()=>{
+        state.feedbackModal = null;
         finishGame(false);
         state.lock = false;
-      }, 1100);
+      }, 2500);
     }
   }
 
@@ -844,7 +872,7 @@
       finishGame(true);
       return;
     }
-    state.focusIndex = 0;
+    state.focusIndex = -1;
     state.selectedIndex = null;
     state.toast = state.toast; // keep toast if any
     render();
