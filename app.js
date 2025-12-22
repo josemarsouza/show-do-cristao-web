@@ -711,9 +711,58 @@
     const r = state.round;
     if(!r || r.helps.skip) return;
     r.helps.skip = true;
+    
+    // Pick a new question from the same difficulty level
+    const bank = window.QUESTION_BANK;
+    const idx = r.prizeIndex;
+    const pick = (arr)=> shuffle(arr)[0];
+    
+    const easyPool = bank.easy;
+    const medPool = bank.medium;
+    const hardPool = bank.hard;
+    const vhPool = bank.veryhard;
+    const extremePool = bank.extreme;
+    
+    // Determine difficulty based on prize index and mode
+    let pool;
+    if(state.settings.kidsMode){
+      pool = idx < 2 ? easyPool : idx < 4 ? medPool : hardPool;
+    } else {
+      pool = idx === 0 ? easyPool 
+           : idx <= 2 ? medPool 
+           : idx === 3 ? hardPool 
+           : idx === 4 ? vhPool 
+           : extremePool;
+    }
+    
+    // Pick a different question from the pool
+    const currentQ = r.questions[idx].q;
+    let newQ = pick(pool);
+    let tries = 0;
+    while(newQ.q === currentQ && tries < 10){
+      newQ = pick(pool);
+      tries++;
+    }
+    
+    // Shuffle alternatives
+    const indices = [0,1,2,3];
+    const shuffledIdx = shuffle(indices);
+    const answers = shuffledIdx.map(i=> newQ.a[i]);
+    const correct = shuffledIdx.indexOf(newQ.c);
+    
+    r.questions[idx] = {
+      q: newQ.q,
+      a: answers,
+      c: correct,
+      tip: newQ.tip || "",
+    };
+    
     r.eliminated = new Set(); // reset eliminations on skip
-    setToast("Pular usado!", "Você avançou para a próxima pergunta.");
-    nextQuestion(true);
+    state.selectedIndex = null;
+    state.focusIndex = -1;
+    
+    setToast("Pular usado!", "Nova pergunta no mesmo nível.");
+    render();
   }
 
   function useEliminate(){
