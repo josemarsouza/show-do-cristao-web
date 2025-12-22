@@ -303,11 +303,11 @@
       return `
         <div class="header">
           <div class="brand">
+            ${showLogoInHeader ? '<img src="logo.png" alt="Show do Cristão Logo" onerror="this.style.display=\'none\'" />' : ''}
             <div class="logo-title">
-              ${showLogoInHeader ? '<img src="logo.png" alt="Show do Cristão Logo" onerror="this.style.display=\'none\'" />' : ''}
               <h1>Show do Cristão</h1>
+              <div class="sub">Quiz Natalino em Família • Jesus é o motivo!</div>
             </div>
-            <div class="sub">Quiz Natalino em Família • Jesus é o motivo!</div>
           </div>
           <div class="header-right">
             ${playerInfo}
