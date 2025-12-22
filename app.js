@@ -696,7 +696,7 @@
 
   function moveFocus(dir){
     if(!state.round) return;
-    let idx = state.focusIndex >= 0 ? state.focusIndex : 0;
+    let idx = Math.max(state.focusIndex, 0);
     for(let tries=0; tries<6; tries++){
       idx = (idx + dir + 4) % 4;
       if(!state.round.eliminated.has(idx)){

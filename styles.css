@@ -665,6 +665,7 @@ input[type="text"]:focus{
 }
 
 .feedback-content.correct .feedback-title {
+  color: var(--good);
   background: linear-gradient(135deg, var(--good), #4ade80);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -672,6 +673,7 @@ input[type="text"]:focus{
 }
 
 .feedback-content.wrong .feedback-title {
+  color: var(--bad);
   background: linear-gradient(135deg, var(--bad), #ef4444);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
