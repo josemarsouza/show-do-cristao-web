@@ -232,6 +232,7 @@ body::after {
   }
   .brand > img{
     height: clamp(40px, 8vw, 48px);
+    width: auto;
   }
   .brand .logo-title img{
     height: clamp(40px, 8vw, 48px);
