@@ -333,7 +333,7 @@ window.QUESTION_BANK = {
       "tip": "Bartimeu, filho de Timeu, foi curado da cegueira."
     },
     {
-      "q": "Quantos  homens Jesus alimentou na multiplicação dos pães (sem contar mulheres e crianças)?",
+      "q": "Quantos homens Jesus alimentou na multiplicação dos pães (sem contar mulheres e crianças)?",
       "a": [
         "3.000",
         "4.000",
