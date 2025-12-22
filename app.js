@@ -136,14 +136,29 @@
     selectedIndex: null, // index selected but not yet confirmed
     toast: null,
     lock: false, // prevents double submit during animations
-    feedbackModal: null, // { type: 'correct' | 'wrong', message: string }
+    feedbackModal: null, // { type: 'correct' | 'wrong', message: string, verse: string }
+    recentQuestions: [], // Track recently used questions to avoid repetition
   };
+
+  // Helper to pick a random item from array, avoiding recently used ones
+  function pickAvoidingRecent(arr, maxRecent = 10){
+    if(arr.length <= 1) return arr[0];
+    
+    // Filter out recently used questions
+    const available = arr.filter(q => {
+      const key = q.q;
+      return !state.recentQuestions.slice(-maxRecent).includes(key);
+    });
+    
+    // If all are recent, use full array (shouldn't happen often)
+    const pool = available.length > 0 ? available : arr;
+    return shuffle(pool)[0];
+  }
 
   function buildRound(){
     // Select 6 questions: 1 per prize level, difficulty buckets:
     // Level 0 -> easy, 1-2 -> medium, 3 -> hard, 4 -> veryhard, 5 -> extreme
     const bank = window.QUESTION_BANK;
-    const pick = (arr)=> shuffle(arr)[0];
 
     const easyPool = bank.easy;
     const medPool = bank.medium;
@@ -153,15 +168,34 @@
 
     // Kids mode: use easier distribution
     const levels = state.settings.kidsMode
-      ? [pick(easyPool), pick(easyPool), pick(medPool), pick(medPool), pick(hardPool), pick(hardPool)]
-      : [pick(easyPool), pick(medPool), pick(medPool), pick(hardPool), pick(vhPool), pick(extremePool)];
+      ? [
+          pickAvoidingRecent(easyPool), 
+          pickAvoidingRecent(easyPool), 
+          pickAvoidingRecent(medPool), 
+          pickAvoidingRecent(medPool), 
+          pickAvoidingRecent(hardPool), 
+          pickAvoidingRecent(hardPool)
+        ]
+      : [
+          pickAvoidingRecent(easyPool), 
+          pickAvoidingRecent(medPool), 
+          pickAvoidingRecent(medPool), 
+          pickAvoidingRecent(hardPool), 
+          pickAvoidingRecent(vhPool), 
+          pickAvoidingRecent(extremePool)
+        ];
 
-    // Ensure unique questions (best effort)
+    // Ensure unique questions within this round
     const unique = [];
     const used = new Set();
     for (const q of levels){
       const key = q.q + "||" + q.a.join("|");
-      if(!used.has(key)){ unique.push(q); used.add(key); }
+      if(!used.has(key)){ 
+        unique.push(q); 
+        used.add(key);
+        // Track this question as recently used
+        state.recentQuestions.push(q.q);
+      }
       else{
         // fallback: find another from same bucket
         const bucket = easyPool.includes(q) ? easyPool 
@@ -174,8 +208,16 @@
           return !used.has(k);
         }) || q;
         const k2 = alt.q + "||" + alt.a.join("|");
-        unique.push(alt); used.add(k2);
+        unique.push(alt); 
+        used.add(k2);
+        // Track this question as recently used
+        state.recentQuestions.push(alt.q);
       }
+    }
+    
+    // Keep only last 30 questions in recent history to prevent memory bloat
+    if(state.recentQuestions.length > 30){
+      state.recentQuestions = state.recentQuestions.slice(-30);
     }
 
     // For each question, we will optionally shuffle alternatives while tracking correct index
@@ -189,6 +231,7 @@
         a: answers,
         c: correct,
         tip: qObj.tip || "",
+        verse: qObj.verse || "", // Include verse reference
       };
     });
 
@@ -446,17 +489,21 @@
       const ok = r?.lastResult?.ok;
       const gaveUp = r?.gaveUp;
       
+      // Personalize with player name if available
+      const playerName = state.playerName || "";
+      const nameGreeting = playerName ? playerName : "campeão";
+      
       let title, msg, emoji;
       if(gaveUp){
-        title = "Você desistiu! 😅";
+        title = playerName ? `${playerName}, você desistiu! 😅` : "Você desistiu! 😅";
         msg = "Tudo bem, o importante é ter tentado! Que tal jogar de novo? Você pode conseguir mais!";
         emoji = "🎄";
       } else if(ok){
-        title = "Parabéns, campeão! 🎉";
+        title = `Parabéns, ${nameGreeting}! 🎉`;
         msg = "Você arrasou e conquistou o prêmio máximo! Jesus deve estar orgulhoso do seu conhecimento! 🌟";
         emoji = "🏆";
       } else {
-        title = "Quase lá! 💪";
+        title = playerName ? `Quase lá, ${playerName}! 💪` : "Quase lá! 💪";
         msg = "Não foi dessa vez, mas você foi muito bem! O importante é ter participado. Vamos tentar de novo?";
         emoji = "🎁";
       }
@@ -518,21 +565,56 @@
       const title = isCorrect ? 'Resposta Correta!' : 'Resposta Incorreta';
       const cssClass = isCorrect ? 'correct' : 'wrong';
       
+      // Display verse reference if available
+      const verseHtml = f.verse 
+        ? `<p class="feedback-verse">📖 ${escapeHtml(f.verse)}</p>` 
+        : '';
+      
       return `
-        <div class="feedback-modal">
-          <div class="feedback-content ${cssClass}">
+        <div class="feedback-modal" id="feedbackModal" onclick="dismissFeedbackModal()">
+          <div class="feedback-content ${cssClass}" onclick="event.stopPropagation()">
             <div class="feedback-icon">${icon}</div>
             <h2 class="feedback-title">${title}</h2>
             <p class="feedback-message">${escapeHtml(f.message)}</p>
+            ${verseHtml}
+            <button class="feedback-continue-btn" onclick="dismissFeedbackModal()">
+              ✨ Clique para continuar ✨
+            </button>
           </div>
         </div>
       `;
     }
   };
 
+  // Global function to dismiss feedback modal
+  window.dismissFeedbackModal = function(){
+    if(!state.feedbackModal) return;
+    state.feedbackModal = null;
+    state.lock = false;
+    
+    // Handle next action based on game state
+    const r = state.round;
+    if(r && r.lastResult){
+      if(r.lastResult.ok){
+        nextQuestion(false);
+      } else {
+        finishGame(false);
+      }
+    }
+    render();
+  };
+
   function bindCommon(){
     document.onkeydown = (e)=>{
       if(e.key === "F11") return; // let browser handle
+      
+      // Allow dismissing feedback modal with Enter or Space
+      if(state.feedbackModal && (e.key === "Enter" || e.key === " ")){
+        e.preventDefault();
+        window.dismissFeedbackModal();
+        return;
+      }
+      
       if(state.screen === "home"){
         if(e.key === "Enter") $("#btnStart")?.click();
         if(e.key === "Escape") return;
@@ -718,7 +800,6 @@
     // Pick a new question from the same difficulty level
     const bank = window.QUESTION_BANK;
     const idx = r.prizeIndex;
-    const pick = (arr)=> shuffle(arr)[0];
     
     const easyPool = bank.easy;
     const medPool = bank.medium;
@@ -738,13 +819,19 @@
            : extremePool;
     }
     
-    // Pick a different question from the pool
+    // Pick a different question from the pool, avoiding current and recent ones
     const currentQ = r.questions[idx].q;
-    let newQ = pick(pool);
+    let newQ = pickAvoidingRecent(pool);
     let tries = 0;
     while(newQ.q === currentQ && tries < MAX_QUESTION_RETRIES){
-      newQ = pick(pool);
+      newQ = pickAvoidingRecent(pool);
       tries++;
+    }
+    
+    // Track as recently used
+    state.recentQuestions.push(newQ.q);
+    if(state.recentQuestions.length > 30){
+      state.recentQuestions = state.recentQuestions.slice(-30);
     }
     
     // Shuffle alternatives
@@ -758,6 +845,7 @@
       a: answers,
       c: correct,
       tip: newQ.tip || "",
+      verse: newQ.verse || "",
     };
     
     r.eliminated = new Set(); // reset eliminations on skip
@@ -906,15 +994,15 @@
 
       sounds.correct();
       
-      // Show feedback modal
-      state.feedbackModal = { type: 'correct', message: explain };
+      // Show feedback modal with verse reference
+      state.feedbackModal = { 
+        type: 'correct', 
+        message: explain,
+        verse: q.verse || null
+      };
       render();
-
-      window.setTimeout(()=>{
-        state.feedbackModal = null;
-        nextQuestion(false);
-        state.lock = false;
-      }, FEEDBACK_MODAL_DURATION_CORRECT);
+      
+      // No automatic timeout - user must click to continue
     }else{
       // finish - keep last won (if no correct yet, 0)
       const explain = state.settings.showExplanation && q.tip
@@ -923,15 +1011,15 @@
       
       sounds.wrong();
       
-      // Show feedback modal
-      state.feedbackModal = { type: 'wrong', message: explain };
+      // Show feedback modal with verse reference
+      state.feedbackModal = { 
+        type: 'wrong', 
+        message: explain,
+        verse: q.verse || null
+      };
       render();
-
-      window.setTimeout(()=>{
-        state.feedbackModal = null;
-        finishGame(false);
-        state.lock = false;
-      }, FEEDBACK_MODAL_DURATION_WRONG);
+      
+      // No automatic timeout - user must click to continue
     }
   }
 
