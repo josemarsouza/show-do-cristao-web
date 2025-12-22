@@ -446,5 +446,172 @@ window.QUESTION_BANK = {
       "c": 1,
       "tip": "Moisés e Elias apareceram conversando com Jesus na transfiguração."
     }
+  ],
+  "extreme": [
+    {
+      "q": "Em qual cidade Jesus ressuscitou o filho de uma viúva durante um cortejo fúnebre?",
+      "a": [
+        "Naim",
+        "Cafarnaum",
+        "Betsaida",
+        "Corazim"
+      ],
+      "c": 0,
+      "tip": "Jesus ressuscitou o filho da viúva em Naim (Lucas 7:11-17)."
+    },
+    {
+      "q": "Quantas bem-aventuranças Jesus proclamou no Sermão do Monte?",
+      "a": [
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      "c": 2,
+      "tip": "Jesus proclamou 9 bem-aventuranças em Mateus 5:3-11."
+    },
+    {
+      "q": "Qual era o nome do servo do sumo sacerdote cuja orelha Pedro cortou no Getsêmani?",
+      "a": [
+        "Malco",
+        "Simão",
+        "Judas",
+        "Marcos"
+      ],
+      "c": 0,
+      "tip": "Malco era o servo de Caifás cuja orelha foi curada por Jesus."
+    },
+    {
+      "q": "Em qual idioma estava escrita a inscrição na cruz de Jesus?",
+      "a": [
+        "Hebraico e Grego",
+        "Latim e Aramaico",
+        "Hebraico, Latim e Grego",
+        "Apenas Latim"
+      ],
+      "c": 2,
+      "tip": "A inscrição estava em Hebraico, Latim e Grego (João 19:20)."
+    },
+    {
+      "q": "Qual discípulo Jesus encontrou debaixo de uma figueira antes de chamá-lo?",
+      "a": [
+        "Pedro",
+        "Natanael (Bartolomeu)",
+        "Mateus",
+        "João"
+      ],
+      "c": 1,
+      "tip": "Jesus viu Natanael debaixo da figueira (João 1:48)."
+    },
+    {
+      "q": "Quantos soldados romanos foram enviados para prender Jesus no Getsêmani, segundo João?",
+      "a": [
+        "Uma coorte (600 soldados)",
+        "Uma centúria (100 soldados)",
+        "Doze soldados",
+        "Trinta soldados"
+      ],
+      "c": 0,
+      "tip": "João 18:3 menciona uma coorte (speira em grego), que era cerca de 600 homens."
+    },
+    {
+      "q": "Qual fariseu visitou Jesus à noite e depois defendeu Jesus perante o Sinédrio?",
+      "a": [
+        "Gamaliel",
+        "Nicodemos",
+        "José de Arimateia",
+        "Saulo de Tarso"
+      ],
+      "c": 1,
+      "tip": "Nicodemos visitou Jesus à noite e depois o defendeu (João 3 e 7:50)."
+    },
+    {
+      "q": "Quantos dias após a ressurreição Jesus apareceu aos discípulos pela terceira vez, no Mar de Tiberíades?",
+      "a": [
+        "3 dias",
+        "7 dias",
+        "Não está especificado",
+        "40 dias"
+      ],
+      "c": 2,
+      "tip": "João 21 não especifica quantos dias exatamente, apenas que foi a terceira aparição."
+    },
+    {
+      "q": "Qual era a profissão de Simão, em cuja casa Jesus estava quando uma mulher ungiu seus pés?",
+      "a": [
+        "Carpinteiro",
+        "Leproso",
+        "Fariseu",
+        "Publicano"
+      ],
+      "c": 1,
+      "tip": "Simão, o leproso, hospedou Jesus em Betânia (Mateus 26:6)."
+    },
+    {
+      "q": "Em qual sinagoga Jesus leu o texto de Isaías 61 e declarou que a escritura se cumpria?",
+      "a": [
+        "Sinagoga de Cafarnaum",
+        "Sinagoga de Nazaré",
+        "Sinagoga de Jerusalém",
+        "Sinagoga de Betsaida"
+      ],
+      "c": 1,
+      "tip": "Foi na sinagoga de Nazaré, sua cidade natal (Lucas 4:16-21)."
+    },
+    {
+      "q": "Quantos peixes foram pescados na pesca milagrosa após a ressurreição?",
+      "a": [
+        "100 peixes",
+        "120 peixes",
+        "144 peixes",
+        "153 peixes"
+      ],
+      "c": 3,
+      "tip": "João 21:11 menciona especificamente 153 grandes peixes."
+    },
+    {
+      "q": "Qual era o nome do pai de João Batista?",
+      "a": [
+        "Zacarias",
+        "Simeão",
+        "Eli",
+        "José"
+      ],
+      "c": 0,
+      "tip": "Zacarias era sacerdote e pai de João Batista (Lucas 1)."
+    },
+    {
+      "q": "Em qual cidade da Decápolis Jesus expulsou uma legião de demônios?",
+      "a": [
+        "Gadara",
+        "Gerasa",
+        "Hippos",
+        "Pela"
+      ],
+      "c": 1,
+      "tip": "Jesus curou o endemoninhado gadareno na região de Gerasa (Marcos 5:1)."
+    },
+    {
+      "q": "Quantas vezes o evangelho de João registra Jesus chorando?",
+      "a": [
+        "Uma vez",
+        "Duas vezes",
+        "Três vezes",
+        "Nenhuma vez"
+      ],
+      "c": 0,
+      "tip": "João registra Jesus chorando uma vez, na morte de Lázaro (João 11:35)."
+    },
+    {
+      "q": "Qual era o nome da mãe de João e Tiago, filhos de Zebedeu?",
+      "a": [
+        "Maria",
+        "Salomé",
+        "Joana",
+        "Susana"
+      ],
+      "c": 1,
+      "tip": "Salomé era mãe de Tiago e João, possivelmente irmã de Maria."
+    }
   ]
 };
