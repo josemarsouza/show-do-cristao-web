@@ -297,10 +297,16 @@
         ? `<div class="pill"><span>🎄 Você conquistou:</span> <strong>R$ ${state.round.won}</strong></div>`
         : `<div class="pill"><span>Dica:</span> <strong>F11</strong> tela cheia</div>`;
 
+      // Show logo in header only when not on home screen
+      const showLogoInHeader = state.screen !== "home";
+
       return `
         <div class="header">
           <div class="brand">
-            <h1>🎅 Show do Cristão 🎄</h1>
+            <div class="logo-title">
+              ${showLogoInHeader ? '<img src="logo.png" alt="Show do Cristão Logo" onerror="this.style.display=\'none\'" />' : ''}
+              <h1>Show do Cristão</h1>
+            </div>
             <div class="sub">Quiz Natalino em Família • Jesus é o motivo!</div>
           </div>
           <div class="header-right">
@@ -313,7 +319,10 @@
     home(){
       return `
         <div class="center">
-          <h2 class="title-big">🎄 Quiz Natalino em Família! 🎁</h2>
+          <div class="hero-logo">
+            <img src="logo.png" alt="Show do Cristão Logo" onerror="this.style.display=\\'none\\'" />
+          </div>
+          <h2 class="title-big">Quiz Natalino em Família! 🎁</h2>
           <p class="lead">
             Neste Natal, vamos testar nosso conhecimento sobre Jesus de forma divertida! 
             A cada acerto, você sobe na premiação:

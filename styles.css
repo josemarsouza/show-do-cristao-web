@@ -1,18 +1,36 @@
 /* Show do Cristão - Christmas Theme */
 :root{
-  --bg1:#0a1810;
-  --bg2:#0f2418;
-  --card:#1a3828;
-  --card2:#234c38;
-  --text:#fef9f3;
-  --muted:#d4c5b9;
-  --accent:#ffd700;
-  --good:#2dd881;
-  --bad:#ff5252;
-  --focus:#ffb347;
-  --christmas-red:#c41e3a;
-  --christmas-green:#165b33;
-  --christmas-gold:#ffd700;
+  --gold-main: #F5C84B;
+  --gold-dark: #C99A2E;
+  
+  --blue-main: #1E4FA3;
+  --blue-dark: #0B2A4A;
+  
+  --green-main: #1F7A3F;
+  --green-dark: #14552C;
+  
+  --red-main: #C62828;
+  
+  --light-glow: #FFE9A3;
+  --text-light: #F4F7FF;
+  
+  --bg-main: #071421;
+  --bg-card: #0F2C46;
+  
+  /* Legacy aliases for compatibility */
+  --bg1: var(--bg-main);
+  --bg2: var(--bg-card);
+  --card: var(--bg-card);
+  --card2: #1a4a6e;
+  --text: var(--text-light);
+  --muted: #B0C4DE;
+  --accent: var(--gold-main);
+  --good: var(--green-main);
+  --bad: var(--red-main);
+  --focus: var(--gold-dark);
+  --christmas-red: var(--red-main);
+  --christmas-green: var(--green-main);
+  --christmas-gold: var(--gold-main);
   --border: rgba(255,255,255,0.12);
   --shadow: rgba(0,0,0,0.4);
 }
@@ -23,7 +41,7 @@ body{
   margin:0;
   font-family: "Liberation Sans","DejaVu Sans","Nimbus Sans L", Arial, Helvetica, sans-serif;
   color:var(--text);
-  background: radial-gradient(1200px 800px at 30% 15%, #165b33 0%, var(--bg1) 60%, #050a08 100%);
+  background: radial-gradient(ellipse at top, var(--blue-dark) 0%, var(--bg-main) 50%, #000000 100%);
   overflow:hidden;
   position: relative;
 }
@@ -36,24 +54,100 @@ body::before {
   right: 0;
   bottom: 0;
   background-image: 
-    radial-gradient(2px 2px at 20% 30%, white, transparent),
-    radial-gradient(2px 2px at 60% 70%, white, transparent),
+    radial-gradient(1px 1px at 20% 30%, white, transparent),
+    radial-gradient(1px 1px at 60% 70%, white, transparent),
     radial-gradient(1px 1px at 50% 50%, white, transparent),
-    radial-gradient(3px 3px at 80% 10%, white, transparent),
-    radial-gradient(2px 2px at 10% 80%, white, transparent);
-  background-size: 250px 250px, 350px 350px, 180px 180px, 300px 300px, 200px 200px;
-  opacity: 0.2;
+    radial-gradient(2px 2px at 80% 10%, white, transparent),
+    radial-gradient(1px 1px at 10% 80%, white, transparent),
+    radial-gradient(1px 1px at 90% 40%, white, transparent),
+    radial-gradient(1px 1px at 30% 90%, white, transparent);
+  background-size: 200% 200%;
+  background-position: 0% 0%;
+  opacity: 0.4;
   pointer-events: none;
-  animation: snowfall 25s linear infinite;
 }
 
-@keyframes snowfall {
-  from { background-position: 0 0, 100px 0, 50px 0, 150px 0, 200px 0; }
-  to { background-position: 0 250px, 100px 350px, 50px 180px, 150px 300px, 200px 200px; }
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  pointer-events: none;
+  animation: shooting-stars 8s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes shooting-stars {
+  0% {
+    background-image: 
+      linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 150px 2px, 0 0;
+    background-position: -200px 20%, 0 0;
+    background-repeat: no-repeat;
+  }
+  10% {
+    background-image: 
+      linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 150px 2px, 0 0;
+    background-position: 120% 20%, 0 0;
+    background-repeat: no-repeat;
+  }
+  20% {
+    background-image: 
+      linear-gradient(60deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 180px 2px;
+    background-position: -200px 60%;
+    background-repeat: no-repeat;
+  }
+  30% {
+    background-image: 
+      linear-gradient(60deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 180px 2px;
+    background-position: 120% 60%;
+    background-repeat: no-repeat;
+  }
+  45% {
+    background-image: 
+      linear-gradient(50deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 200px 2px;
+    background-position: -200px 35%;
+    background-repeat: no-repeat;
+  }
+  55% {
+    background-image: 
+      linear-gradient(50deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 200px 2px;
+    background-position: 120% 35%;
+    background-repeat: no-repeat;
+  }
+  70% {
+    background-image: 
+      linear-gradient(55deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 160px 2px;
+    background-position: -200px 75%;
+    background-repeat: no-repeat;
+  }
+  80% {
+    background-image: 
+      linear-gradient(55deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 160px 2px;
+    background-position: 120% 75%;
+    background-repeat: no-repeat;
+  }
+  100% {
+    background-image: 
+      linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 0 0;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body::before {
+  body::before, body::after {
     animation: none;
   }
 }
@@ -111,6 +205,15 @@ body::before {
   flex-direction:column;
   gap:4px;
 }
+.brand .logo-title{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand .logo-title img{
+  height: clamp(40px, 5vw, 48px);
+  width: auto;
+}
 .brand h1{
   margin:0;
   font-size: clamp(26px, 3vw, 34px);
@@ -156,6 +259,36 @@ body::before {
   flex-direction:column;
   gap: 16px;
   justify-content:center;
+}
+
+.hero-logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+  animation: logoEntrance 0.8s ease-out;
+}
+
+.hero-logo img{
+  height: clamp(80px, 12vw, 140px);
+  width: auto;
+  filter: drop-shadow(0 8px 24px rgba(245, 196, 75, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.hero-logo img:hover{
+  transform: scale(1.05);
+}
+
+@keyframes logoEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .title-big{
@@ -219,7 +352,7 @@ body::before {
 }
 
 .card{
-  background: linear-gradient(180deg, rgba(15,44,70,0.92), rgba(10,30,48,0.75));
+  background: linear-gradient(180deg, rgba(15,44,70,0.92), rgba(7,20,33,0.85));
   border:1px solid var(--border);
   border-radius: 18px;
   box-shadow: 0 12px 30px rgba(0,0,0,0.22);
@@ -255,7 +388,7 @@ body::before {
   cursor:pointer;
   border:1px solid var(--border);
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(18,53,80,0.8), rgba(12,40,64,0.72));
+  background: linear-gradient(180deg, rgba(30,79,163,0.15), rgba(11,42,74,0.25));
   transition: transform 120ms ease, border-color 120ms ease, background 120ms ease, opacity 120ms ease;
   outline:none;
   display:flex;
@@ -482,9 +615,9 @@ body::before {
 }
 
 .money-note.earned{
-  background: linear-gradient(135deg, #2d8659, #1a5c3a);
-  border-color: var(--christmas-green);
-  box-shadow: 0 2px 8px rgba(45,216,129,0.3);
+  background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+  border-color: var(--green-main);
+  box-shadow: 0 2px 8px rgba(31,122,63,0.4);
 }
 
 .money-note.pending{
@@ -592,7 +725,7 @@ input[type="text"]:focus{
 }
 
 .feedback-content {
-  background: linear-gradient(180deg, rgba(15,44,70,0.95), rgba(10,30,48,0.85));
+  background: linear-gradient(180deg, rgba(15,44,70,0.95), rgba(7,20,33,0.90));
   border: 2px solid var(--border);
   border-radius: 24px;
   padding: 40px 32px;
