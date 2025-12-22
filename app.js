@@ -335,35 +335,38 @@
             É só responder e se divertir! 🌟
           </p>
 
-          <div class="card rules-card">
-            <h3 style="margin:0 0 12px; color:var(--christmas-red); font-size: clamp(22px, 2.8vw, 28px);">📜 Regras do Jogo</h3>
-            <ul class="rules-list">
-              <li><strong>6 perguntas</strong> sobre Jesus e a Bíblia</li>
-              <li>Cada acerto aumenta sua <strong style="color:var(--christmas-gold)">premiação</strong></li>
-              <li><strong style="color:var(--christmas-red)">Errou? O jogo termina!</strong> Você não leva prêmio</li>
-              <li>Use <strong>3 ajudas</strong>: 🔄 Pular, ❌ Eliminar 2 alternativas, 💡 Dica</li>
-              <li>Após usar todas as ajudas, pode <strong>desistir</strong> e levar metade do valor</li>
-              <li>Perguntas ficam mais <strong style="color:var(--christmas-red)">difíceis</strong> conforme você avança!</li>
-            </ul>
-          </div>
+          <div class="home-cards-container">
+            <div class="card rules-card">
+              <h3 style="margin:0 0 10px; color:var(--christmas-red); font-size: clamp(18px, 2.4vw, 24px);">📜 Regras</h3>
+              <ul class="rules-list">
+                <li><strong>6 perguntas</strong> sobre Jesus</li>
+                <li>Cada acerto aumenta sua <strong style="color:var(--christmas-gold)">premiação</strong></li>
+                <li><strong style="color:var(--christmas-red)">Errou? Jogo termina!</strong></li>
+                <li>Use <strong>3 ajudas</strong>: 🔄 Pular, ❌ Eliminar, 💡 Dica</li>
+                <li>Após usar ajudas, pode <strong>desistir</strong> (leva metade)</li>
+              </ul>
+            </div>
 
-          <div class="card" style="padding:16px 18px; margin-top: 6px">
-            <label for="playerNameInput" style="display:block; margin-bottom:8px; font-size: clamp(16px, 2vw, 18px); font-weight:600;">
-              👤 Digite seu nome para começar:
-            </label>
-            <input 
-              type="text" 
-              id="playerNameInput" 
-              placeholder="Seu nome..." 
-              maxlength="30"
-              value="${escapeHtml(state.playerName)}"
-              style="width:100%; padding:12px 14px; font-size: clamp(16px, 2vw, 18px); border-radius:12px; border:1px solid var(--border); background:rgba(0,0,0,0.35); color:var(--text); outline:none;"
-            />
-          </div>
+            <div class="input-card-container">
+              <div class="card" style="padding:16px 18px;">
+                <label for="playerNameInput" style="display:block; margin-bottom:8px; font-size: clamp(16px, 2vw, 18px); font-weight:600;">
+                  👤 Digite seu nome:
+                </label>
+                <input 
+                  type="text" 
+                  id="playerNameInput" 
+                  placeholder="Seu nome..." 
+                  maxlength="30"
+                  value="${escapeHtml(state.playerName)}"
+                  style="width:100%; padding:12px 14px; font-size: clamp(16px, 2vw, 18px); border-radius:12px; border:1px solid var(--border); background:rgba(0,0,0,0.35); color:var(--text); outline:none;"
+                />
+              </div>
 
-          <div class="row" style="margin-top:10px">
-            <button class="btn primary" id="btnStart">🎅 Começar a Brincadeira!</button>
-            <button class="btn" id="btnSettings">⚙️ Configurações</button>
+              <div class="row" style="margin-top:10px">
+                <button class="btn primary" id="btnStart">🎅 Começar!</button>
+                <button class="btn" id="btnSettings">⚙️ Configurações</button>
+              </div>
+            </div>
           </div>
 
           <div class="card" style="padding:14px 16px; margin-top: 10px">
