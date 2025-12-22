@@ -300,7 +300,10 @@
       return `
         <div class="header">
           <div class="brand">
-            <h1>🎅 Show do Cristão 🎄</h1>
+            <div class="logo-title">
+              <img src="logo.png" alt="Show do Cristão Logo" />
+              <h1>Show do Cristão</h1>
+            </div>
             <div class="sub">Quiz Natalino em Família • Jesus é o motivo!</div>
           </div>
           <div class="header-right">
@@ -313,7 +316,7 @@
     home(){
       return `
         <div class="center">
-          <h2 class="title-big">🎄 Quiz Natalino em Família! 🎁</h2>
+          <h2 class="title-big">Quiz Natalino em Família! 🎁</h2>
           <p class="lead">
             Neste Natal, vamos testar nosso conhecimento sobre Jesus de forma divertida! 
             A cada acerto, você sobe na premiação:
