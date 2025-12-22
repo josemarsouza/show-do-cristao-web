@@ -54,26 +54,41 @@ body::before {
   right: 0;
   bottom: 0;
   background-image: 
-    radial-gradient(1px 1px at 20% 30%, white, transparent),
-    radial-gradient(1px 1px at 60% 70%, white, transparent),
-    radial-gradient(1px 1px at 50% 50%, white, transparent),
-    radial-gradient(2px 2px at 80% 10%, white, transparent),
-    radial-gradient(1px 1px at 10% 80%, white, transparent),
-    radial-gradient(1px 1px at 90% 40%, white, transparent),
-    radial-gradient(1px 1px at 30% 90%, white, transparent),
-    radial-gradient(1px 1px at 15% 15%, white, transparent),
-    radial-gradient(2px 2px at 75% 85%, white, transparent),
-    radial-gradient(1px 1px at 40% 20%, white, transparent),
-    radial-gradient(1px 1px at 85% 60%, white, transparent),
-    radial-gradient(1px 1px at 25% 55%, white, transparent),
-    radial-gradient(2px 2px at 65% 35%, white, transparent),
-    radial-gradient(1px 1px at 5% 45%, white, transparent),
-    radial-gradient(1px 1px at 95% 25%, white, transparent),
-    radial-gradient(1px 1px at 35% 75%, white, transparent),
-    radial-gradient(2px 2px at 55% 95%, white, transparent),
-    radial-gradient(1px 1px at 70% 15%, white, transparent),
-    radial-gradient(1px 1px at 45% 65%, white, transparent),
-    radial-gradient(1px 1px at 12% 92%, white, transparent);
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(2px 2px at 60% 70%, white, transparent),
+    radial-gradient(3px 3px at 50% 50%, white, transparent),
+    radial-gradient(3px 3px at 80% 10%, white, transparent),
+    radial-gradient(2px 2px at 10% 80%, white, transparent),
+    radial-gradient(2px 2px at 90% 40%, white, transparent),
+    radial-gradient(2px 2px at 30% 90%, white, transparent),
+    radial-gradient(2px 2px at 15% 15%, white, transparent),
+    radial-gradient(3px 3px at 75% 85%, white, transparent),
+    radial-gradient(2px 2px at 40% 20%, white, transparent),
+    radial-gradient(2px 2px at 85% 60%, white, transparent),
+    radial-gradient(2px 2px at 25% 55%, white, transparent),
+    radial-gradient(3px 3px at 65% 35%, white, transparent),
+    radial-gradient(2px 2px at 5% 45%, white, transparent),
+    radial-gradient(2px 2px at 95% 25%, white, transparent),
+    radial-gradient(2px 2px at 35% 75%, white, transparent),
+    radial-gradient(3px 3px at 55% 95%, white, transparent),
+    radial-gradient(2px 2px at 70% 15%, white, transparent),
+    radial-gradient(2px 2px at 45% 65%, white, transparent),
+    radial-gradient(2px 2px at 12% 92%, white, transparent),
+    radial-gradient(2px 2px at 33% 10%, white, transparent),
+    radial-gradient(3px 3px at 88% 78%, white, transparent),
+    radial-gradient(2px 2px at 18% 45%, white, transparent),
+    radial-gradient(2px 2px at 72% 33%, white, transparent),
+    radial-gradient(2px 2px at 44% 88%, white, transparent),
+    radial-gradient(3px 3px at 8% 22%, white, transparent),
+    radial-gradient(2px 2px at 92% 8%, white, transparent),
+    radial-gradient(2px 2px at 28% 66%, white, transparent),
+    radial-gradient(2px 2px at 66% 22%, white, transparent),
+    radial-gradient(3px 3px at 52% 12%, white, transparent),
+    radial-gradient(2px 2px at 14% 58%, white, transparent),
+    radial-gradient(2px 2px at 78% 92%, white, transparent),
+    radial-gradient(2px 2px at 38% 42%, white, transparent),
+    radial-gradient(3px 3px at 96% 52%, white, transparent),
+    radial-gradient(2px 2px at 22% 76%, white, transparent);
   background-size: 200% 200%;
   background-position: 0% 0%;
   opacity: 1;
@@ -115,7 +130,7 @@ body::after {
   10% {
     background-image: 
       linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 120px 1.5px;
+    background-size: 180px 2.5px;
     background-position: -200px 25%;
     background-repeat: no-repeat;
     opacity: 0;
@@ -126,7 +141,7 @@ body::after {
   18% {
     background-image: 
       linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 120px 1.5px;
+    background-size: 180px 2.5px;
     background-position: 120% 25%;
     background-repeat: no-repeat;
     opacity: 0.3;
@@ -137,7 +152,7 @@ body::after {
   55% {
     background-image: 
       linear-gradient(55deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 140px 1.5px;
+    background-size: 200px 2.5px;
     background-position: -200px 65%;
     background-repeat: no-repeat;
     opacity: 0;
@@ -148,7 +163,7 @@ body::after {
   64% {
     background-image: 
       linear-gradient(55deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 140px 1.5px;
+    background-size: 200px 2.5px;
     background-position: 120% 65%;
     background-repeat: no-repeat;
     opacity: 0.3;
@@ -210,20 +225,28 @@ body::after {
     width:100%;
     justify-content:space-between;
   }
+  .brand{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+  }
+  .brand .logo-title img{
+    height: clamp(40px, 8vw, 48px);
+  }
 }
 
 .brand{
   display:flex;
-  flex-direction:column;
-  gap:4px;
+  align-items:center;
+  gap:16px;
 }
 .brand .logo-title{
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 6px;
 }
 .brand .logo-title img{
-  height: clamp(40px, 5vw, 48px);
+  height: clamp(48px, 6vw, 64px);
   width: auto;
 }
 .brand h1{
