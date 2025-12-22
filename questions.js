@@ -827,7 +827,7 @@ window.QUESTION_BANK = {
         "Monte Sinai",
         "Monte das Oliveiras",
         "Monte Carmelo",
-        "Monte da Transfiguração (Tabor)"
+        "Monte Tabor"
       ],
       "c": 3,
       "tip": "A tradição identifica o Monte Tabor como o local da transfiguração.",
