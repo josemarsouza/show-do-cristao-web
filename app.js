@@ -8,6 +8,9 @@
 (function(){
   const PRIZES = [2, 5, 10, 20, 50, 100];
   const STORAGE_KEY = "show_do_cristao_settings_v1";
+  const MAX_QUESTION_RETRIES = 10;
+  const FEEDBACK_MODAL_DURATION_CORRECT = 2200;
+  const FEEDBACK_MODAL_DURATION_WRONG = 2500;
 
   // Sound System
   const sounds = {
@@ -129,7 +132,7 @@
     settings: loadSettings(),
     playerName: "", // player's name
     round: null,
-    focusIndex: -1, // -1 means no focus initially
+    focusIndex: -1, // -1 means no alternative focused
     selectedIndex: null, // index selected but not yet confirmed
     toast: null,
     lock: false, // prevents double submit during animations
@@ -739,7 +742,7 @@
     const currentQ = r.questions[idx].q;
     let newQ = pick(pool);
     let tries = 0;
-    while(newQ.q === currentQ && tries < 10){
+    while(newQ.q === currentQ && tries < MAX_QUESTION_RETRIES){
       newQ = pick(pool);
       tries++;
     }
@@ -789,25 +792,48 @@
     r.helps.help = true;
 
     const q = r.questions[r.prizeIndex];
-    // 50/50: either show tip or show audience guess
-    const showTip = Math.random() < 0.55 && q.tip;
+    const level = r.prizeIndex; // 0-5, where 0 is easiest
+    
+    // Adjust help strength based on level
+    // Lower levels: more likely to show tip and higher accuracy in audience vote
+    // Higher levels: less likely to show tip and lower accuracy in audience vote
+    const tipProbability = Math.max(0.2, 0.7 - (level * 0.1)); // 70% at level 0, 20% at level 5
+    const showTip = Math.random() < tipProbability && q.tip;
+    
     if(showTip){
       setToast("Dica", q.tip);
     }else{
       const correct = q.c;
       const perc = [0,0,0,0].map(()=> 0);
-      // give more weight to correct
+      
+      // Adjust correct answer percentage based on level
+      // Level 0-1: 70-85% (very helpful)
+      // Level 2-3: 55-70% (moderately helpful)
+      // Level 4-5: 40-55% (less helpful)
+      let minPerc, maxPerc;
+      if(level <= 1){
+        minPerc = 70;
+        maxPerc = 85;
+      } else if(level <= 3){
+        minPerc = 55;
+        maxPerc = 70;
+      } else {
+        minPerc = 40;
+        maxPerc = 55;
+      }
+      
       let remaining = 100;
-      const correctPerc = 55 + Math.floor(Math.random()*26); // 55-80
+      const correctPerc = minPerc + Math.floor(Math.random() * (maxPerc - minPerc + 1));
       perc[correct] = correctPerc;
       remaining -= correctPerc;
+      
       const others = [0,1,2,3].filter(i=> i!==correct && !r.eliminated.has(i));
-      const parts = others.length ? others.length : 3;
       for(let i=0;i<others.length;i++){
         const v = i===others.length-1 ? remaining : Math.floor(Math.random()*(remaining+1));
         perc[others[i]] = v;
         remaining -= v;
       }
+      
       const letters = ["A","B","C","D"];
       const top2 = [0,1,2,3].sort((i,j)=> perc[j]-perc[i]).slice(0,2)
         .map(i=> `${letters[i]} (${perc[i]}%)`).join(" • ");
@@ -888,7 +914,7 @@
         state.feedbackModal = null;
         nextQuestion(false);
         state.lock = false;
-      }, 2200);
+      }, FEEDBACK_MODAL_DURATION_CORRECT);
     }else{
       // finish - keep last won (if no correct yet, 0)
       const explain = state.settings.showExplanation && q.tip
@@ -905,7 +931,7 @@
         state.feedbackModal = null;
         finishGame(false);
         state.lock = false;
-      }, 2500);
+      }, FEEDBACK_MODAL_DURATION_WRONG);
     }
   }
 
