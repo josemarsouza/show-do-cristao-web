@@ -99,115 +99,62 @@ body::after {
   bottom: 0;
   background: transparent;
   pointer-events: none;
-  animation: shooting-stars 6s linear infinite;
-  opacity: 0.9;
+  animation: shooting-stars 15s ease-in-out infinite;
+  opacity: 0.7;
 }
 
 @keyframes shooting-stars {
-  0% {
-    background-image: 
-      linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 150px 2px;
-    background-position: -200px 20%;
-    background-repeat: no-repeat;
-  }
-  8% {
-    background-image: 
-      linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 150px 2px;
-    background-position: 120% 20%;
-    background-repeat: no-repeat;
-  }
-  15% {
-    background-image: 
-      linear-gradient(60deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 180px 2px;
-    background-position: -200px 60%;
-    background-repeat: no-repeat;
-  }
-  23% {
-    background-image: 
-      linear-gradient(60deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 180px 2px;
-    background-position: 120% 60%;
-    background-repeat: no-repeat;
-  }
-  30% {
-    background-image: 
-      linear-gradient(50deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 200px 2px;
-    background-position: -200px 35%;
-    background-repeat: no-repeat;
-  }
-  38% {
-    background-image: 
-      linear-gradient(50deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 200px 2px;
-    background-position: 120% 35%;
-    background-repeat: no-repeat;
-  }
-  45% {
-    background-image: 
-      linear-gradient(55deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 160px 2px;
-    background-position: -200px 75%;
-    background-repeat: no-repeat;
-  }
-  53% {
-    background-image: 
-      linear-gradient(55deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 160px 2px;
-    background-position: 120% 75%;
-    background-repeat: no-repeat;
-  }
-  60% {
-    background-image: 
-      linear-gradient(40deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 140px 2px;
-    background-position: -200px 45%;
-    background-repeat: no-repeat;
-  }
-  68% {
-    background-image: 
-      linear-gradient(40deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 140px 2px;
-    background-position: 120% 45%;
-    background-repeat: no-repeat;
-  }
-  75% {
-    background-image: 
-      linear-gradient(65deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 170px 2px;
-    background-position: -200px 85%;
-    background-repeat: no-repeat;
-  }
-  83% {
-    background-image: 
-      linear-gradient(65deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 170px 2px;
-    background-position: 120% 85%;
-    background-repeat: no-repeat;
-  }
-  90% {
-    background-image: 
-      linear-gradient(48deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 160px 2px;
-    background-position: -200px 15%;
-    background-repeat: no-repeat;
-  }
-  98% {
-    background-image: 
-      linear-gradient(48deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
-    background-size: 160px 2px;
-    background-position: 120% 15%;
-    background-repeat: no-repeat;
-  }
-  100% {
+  0%, 100% {
     background-image: 
       linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
     background-size: 0 0;
     background-position: 0 0;
     background-repeat: no-repeat;
+    opacity: 0;
+  }
+  10% {
+    background-image: 
+      linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 120px 1.5px;
+    background-position: -200px 25%;
+    background-repeat: no-repeat;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  18% {
+    background-image: 
+      linear-gradient(45deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 120px 1.5px;
+    background-position: 120% 25%;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+  }
+  20% {
+    opacity: 0;
+  }
+  55% {
+    background-image: 
+      linear-gradient(55deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 140px 1.5px;
+    background-position: -200px 65%;
+    background-repeat: no-repeat;
+    opacity: 0;
+  }
+  57% {
+    opacity: 1;
+  }
+  64% {
+    background-image: 
+      linear-gradient(55deg, transparent 0%, transparent 40%, var(--light-glow) 50%, transparent 60%, transparent 100%);
+    background-size: 140px 1.5px;
+    background-position: 120% 65%;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+  }
+  66% {
+    opacity: 0;
   }
 }
 
