@@ -301,7 +301,7 @@
         <div class="header">
           <div class="brand">
             <div class="logo-title">
-              <img src="logo.png" alt="Show do Cristão Logo" />
+              <img src="logo.png" alt="Show do Cristão Logo" onerror="this.style.display='none'" />
               <h1>Show do Cristão</h1>
             </div>
             <div class="sub">Quiz Natalino em Família • Jesus é o motivo!</div>
