@@ -489,17 +489,21 @@
       const ok = r?.lastResult?.ok;
       const gaveUp = r?.gaveUp;
       
+      // Personalize with player name if available
+      const playerName = state.playerName || "";
+      const nameGreeting = playerName ? playerName : "campeão";
+      
       let title, msg, emoji;
       if(gaveUp){
-        title = "Você desistiu! 😅";
+        title = playerName ? `${playerName}, você desistiu! 😅` : "Você desistiu! 😅";
         msg = "Tudo bem, o importante é ter tentado! Que tal jogar de novo? Você pode conseguir mais!";
         emoji = "🎄";
       } else if(ok){
-        title = "Parabéns, campeão! 🎉";
+        title = `Parabéns, ${nameGreeting}! 🎉`;
         msg = "Você arrasou e conquistou o prêmio máximo! Jesus deve estar orgulhoso do seu conhecimento! 🌟";
         emoji = "🏆";
       } else {
-        title = "Quase lá! 💪";
+        title = playerName ? `Quase lá, ${playerName}! 💪` : "Quase lá! 💪";
         msg = "Não foi dessa vez, mas você foi muito bem! O importante é ter participado. Vamos tentar de novo?";
         emoji = "🎁";
       }
