@@ -22,7 +22,7 @@ Uma aplicação web interativa estilo "Show do Milhão" com temática cristã e 
 - **Feedback Motivacional**: Mensagens encorajadoras ao final do jogo
 - **Animações Melhoradas**: Efeitos visuais ao acertar (celebração) e errar (tremor)
 
-## 🎮 Como Jogar - Instruções
+## 🎮 Como Jogar
 
 1. Abra `index.html` em seu navegador
 2. Clique em "🎅 Começar a Brincadeira!"
